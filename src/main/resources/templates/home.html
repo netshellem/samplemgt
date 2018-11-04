@@ -1,11 +1,351 @@
 <!DOCTYPE html>
-<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity3">
-    <head>
-        <title>Spring Security Example</title>
-    </head>
-    <body>
-        <h1>Welcome!</h1>
-        
-        <p>Click <a th:href="@{/hello}">here</a> to see a greeting.</p>
-    </body>
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity3">
+<head>
+    <meta charset="utf-8">
+    <!--<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">-->
+    <meta name="description" content="">
+    <meta name="author" content="">
+    <link rel="icon" href="/img/favicon.ico"/>
+
+    <!-- Bootstrap core CSS -->
+    <link href="/css/bootstrap.min.css" type="text/css" rel="stylesheet" th:href="@{/css/bootstrap.min.css}"/>
+
+    <!-- Custom styles for this template -->
+
+    <link rel="stylesheet" type="text/css"
+          href="/css/bootstrap/bootstrap-table.min.css" th:href="@{/css/bootstrap-table.min.css}"/>
+
+    <link rel="stylesheet" type="text/css"
+          href="/css/bootstrap/bootstrap-table-filter-control.css"
+          th:href="@{/css/bootstrap-table-filter-control.css}"/>
+    <link href="/css/bootstrap/bootstrap-editable.css" type="text/css"
+          rel="stylesheet" th:href="@{/css/bootstrap-editable.css}"/>
+    <!-- Optional theme-->
+    <link rel="stylesheet" type="text/css"
+          href="/css/bootstrap/bootstrap-theme.min.css" th:href="@{/css/bootstrap-theme.min.css}"/>
+    <link rel="stylesheet" type="text/css" href="/css/bootstrap/datetimepicker.css" th:href="@{/css/datetimepicker.css}"/>
+    <title>管理系统</title>
+</head>
+<script src="/js/jquery.min.js"></script>
+<script src="/js/popper.min.js"></script>
+<script src="/js/bootstrap/bootstrap.min.js"></script>
+<script src="/js/bootstrap/bootstrap-table.min.js"></script>
+<script src="/js/bootstrap/locale/bootstrap-table-zh-CN.min.js"></script>
+<script src="/js/bootstrap/bootstrap-table-filter-control.js"></script>
+<script src="/js/bootstrap/bootstrap-editable.js"></script>
+<script src="/js/bootstrap/bootstrap-table-editable.js"></script>
+<script src="/js/bootstrap/bootstrap-datetimepicker.js"></script>
+<script src="/js/bootstrap/locale/bootstrap-datetimepicker.zh-CN.js"></script>
+<body>
+
+<div class="container">
+    <h2>样衣管理系统</h2>
+    <br>
+    <!-- Nav tabs -->
+    <ul class="nav nav-tabs" role="tablist">
+        <li  th:each="year : ${navilist}">
+            <a  th:with="isActive=(${year}==${activeYear})" th:class="${isActive}?'nav-link active': 'nav-link'"
+                th:href="@{'/home?year=' + ${year}}" th:text="${year}"></a>
+        </li>
+    </ul>
+        <div id="toolbar">
+            <div class="form-inline" role="form">
+
+                    <div class="form-group">
+                        <button type="button" class="btn btn-default" aria-label="Left Align">
+                            <span class="glyphicon glyphicon-align-left" aria-hidden="true"></span>
+                        </button>
+                        <select name="direction"
+                                class="form-control">
+                            <option value="0" selected>入库</option>
+                            <option value="1">售出</option>
+                        </select>
+
+                    </div>
+                    <div class="form-group">
+                        <button type="button" class="btn btn-default" aria-label="Left Align">
+                            <span class="glyphicon glyphicon-align-left" aria-hidden="true"></span>
+                        </button>
+                        <select name="querystatus" class="form-control" type="text">
+                            <option value="">请选择</option>
+                            <option value="0">库存</option>
+                            <option value="1">售出</option>
+                            <option value="2">退货</option>
+                            <option value="3">赠送</option>
+                            <option value="4">复色</option>
+                            <option value="5">贴牌</option>
+                            <option value="6">合作</option>
+                        </select>
+
+                    </div>
+
+
+                <div class="form-group form-group">
+                    <button type="button" class="btn btn-default" aria-label="Left Align">
+                        <span class="glyphicon glyphicon-align-left" aria-hidden="true"></span>
+                    </button>
+                    <input name="start" class="form-control"
+                           type="text" id="query_start">
+                </div>
+
+                <div class="form-group">
+                    <button type="button" class="btn btn-default" aria-label="Left Align">
+                        <span class="glyphicon glyphicon-align-left" aria-hidden="true"></span>
+                    </button>
+                    <input name="end" class="form-control"
+                           type="text" id="query_end">
+
+                </div>
+
+
+
+                <div class="form-group">
+                    <button type="button" class="btn btn-default" aria-label="Left Align">
+                        <span class="glyphicon glyphicon-align-left" aria-hidden="true"></span>
+                    </button>
+                    <input name="searchname" class="form-control" type="text"
+                           placeholder="张三">
+                </div>
+                <div class="form-group">
+                    <input name="year" class="form-control" type="hidden" id="activeyear"
+                           value="2018">
+                </div>
+                <div class="form-group">
+                    <button id="ok" type="submit" class="btn btn-default">OK</button>
+                </div>
+
+            </div>
+        </div>
+        <table id="table"
+               data-toolbar="#toolbar"
+               data-search="true"
+               data-editable-emptytext="-"
+               data-query-params="queryParams">
+        </table>
+
+</div>
+
+
+<script type="text/javascript">
+  $("#query_start").datetimepicker({
+  	language: 'zh-CN',
+      format: "yyyy-mm-dd",
+      autoclose: true,
+      todayBtn: true,
+      minView: 'month'
+  });
+
+  $("#query_end").datetimepicker({
+  	language: 'zh-CN',
+      format: "yyyy-mm-dd",
+      autoclose: true,
+      todayBtn: true,
+      minView: 'month'
+  });
+
+
+
+</script>
+
+
+<script  th:inline="javascript">
+ var year = [[${activeYear}]];
+$(function () {
+	$('#table').bootstrapTable({
+		locale:'zh-CN',
+		url: '/GetAllCloth?year='+year,
+		method:'post',
+		cache:'false',
+		pagination:'true',
+		sidePagination: 'client',
+		clickToSelect: true,
+        pageNumber: 1,
+        pageSize: 50,
+        pageList: [10, 25, 50, 100],
+        striped: true,
+        sortName:'cid',
+		sortOrder: 'desc',
+		height: 400,
+        uniqueId: 'cid',
+        cardView: false,
+        detailView: false,
+        columns: [
+ 		{
+			field: 'state',
+			checkbox: true
+ 		},
+ 		{
+ 			field: 'id',
+ 			title: '序号',
+ 			formatter: function(value, row,index)
+ 			{
+ 				return index +1;
+ 			}
+ 		},
+        {
+            field: 'cid',
+            title: '样衣编号',
+            sortable: true,
+            sorter:
+            	function priceSorter(a, b) {
+            	var tmp1 = a.substring(0,2);
+            	var tmp2 = b.substring(0,2);
+                if (tmp1 > tmp2) return 1;
+                if (tmp1 < tmp2) return -1;
+                a = a.substring(2,5);
+                b = b.substring(2,5);
+
+                var n1 = parseInt(a);
+                var n2 = parseInt(b);
+                if (!isNaN(n1) && !isNaN(n2))
+                {
+                	if (n1 > n2) return 1;
+                	if (n1 < n2) return -1;
+                }
+
+                n1 = parseInt(a.substring(5));
+                n2 = parseInt(a.substring(5));
+                if (!isNaN(n1) && !isNaN(n2))
+                {
+                	if (n1 > n2) return 1;
+                	if (n1 < n2) return -1;
+                }
+                return 0;
+            }
+        },
+        {
+            field: 'type',
+            title: '样衣类型',
+            sortable: false
+        },
+        {
+            field: 'designer',
+            title: '设计师',
+            sortable: false
+        },
+        {
+            field: 'model',
+            title: '版师',
+            sortable: false
+        },
+        {
+            field: 'sample',
+            title: '样衣师',
+            sortable: false
+        },
+        {
+            field: 'qty',
+            sortable: true,
+            title: '质量'
+        },
+        {
+            field: 'status',
+            sortable: true,
+            sorter: function(a,b){return a.localeCompare(b)},
+            title: '状态'
+        },
+        {
+            field: 'starttime',
+            title: '入库时间',
+            sortable: true,
+            sorter: function(a,b){
+            	var tmp1 = a.substring(0,4);
+            	var tmp2 = b.substring(0,4);
+                if (tmp1 > tmp2) return 1;
+                if (tmp1 < tmp2) return -1;
+                n1 = a.substring(5,7);
+                n2 = b.substring(5,7);
+                if (n1 > n2) return 1;
+                if (n1 < n2) return -1;
+
+                n1 = a.substring(8);
+                n2 = b.substring(8);
+                if (n1 > n2) return 1;
+                if (n1 < n2) return -1;
+                return 0;
+            }
+        },
+        {
+            field: 'customer',
+            title: '客户'
+        },
+        {
+            field: 'endtime',
+            sortable: true,
+            sorter: function(a,b){
+            	if (a === null || a === undefined || a === '') {
+            		 a = '-';
+            		}
+            	if (b === null || b === undefined || b === '') {
+           		 b = '-';
+           		}
+            	if((a.substring(0,1)=='-') &&
+            			(b.substring(0,1)!='-'))
+            		return -1;
+            	if((b.substring(0,1)=='-') &&
+            			(a.substring(0,1)!='-'))
+            		return 1;
+            	var tmp1 = a.substring(0,4);
+            	var tmp2 = b.substring(0,4);
+
+                if (tmp1 > tmp2) return 1;
+                if (tmp1 < tmp2) return -1;
+                n1 = a.substring(5,7);
+                n2 = b.substring(5,7);
+                if (n1 > n2) return 1;
+                if (n1 < n2) return -1;
+
+                n1 = a.substring(8);
+                n2 = b.substring(8);
+                if (n1 > n2) return 1;
+                if (n1 < n2) return -1;
+                return 0;
+            },
+            title: '出库时间'
+
+        },
+        {
+            field: 'comment',
+
+            title: '备注'
+        }]
+
+	//start
+		//end
+
+
+	});
+	$('#addbtn').click(function (){window.location.href="add.jsp";});
+});
+var $table = $('#table');
+var $ok = $('#ok');
+var $delbutton = $('#delbtn');
+$(function () {
+    $ok.click(function () {
+        $table.bootstrapTable('refresh');
+    });
+});
+
+function queryParams() {
+    var params = {};
+    $('#toolbar').find('input[name]').each(function () {
+        params[$(this).attr('name')] = $(this).val();
+    });
+    $('#toolbar').find('select[name]').each(function () {
+        params[$(this).attr('name')] = $(this).val();
+    });
+    return params;
+}
+
+function responseHandler(res) {
+    return res.rows;
+}
+
+
+
+
+</script>
+
+</body>
 </html>
