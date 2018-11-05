@@ -29,6 +29,4 @@ public class QueryParamDTO {
     @JsonProperty("direction")
     public String direction;
 
-    @JsonProperty("year")
-    public String year;
 }
