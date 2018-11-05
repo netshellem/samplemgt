@@ -12,6 +12,7 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.core.userdetails.User;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -39,8 +40,8 @@ public class MainController {
         return "adminPage";
     }
 
-    @RequestMapping(value = {"/home","/lib"}, method = RequestMethod.GET)
-    public String homePage(Model model, @RequestParam(value="year",required = false) String year) {
+    @RequestMapping(value = {"/home/{year}"}, method = RequestMethod.GET)
+    public String homePage(Model model, @PathVariable(value="year",required = false) String year) {
         Date dNow = new Date();
         SimpleDateFormat ft = new SimpleDateFormat ("yyyy");
         String current = ft.format(dNow);

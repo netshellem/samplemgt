@@ -24,6 +24,6 @@ public interface ClothRepository  extends CrudRepository<Cloth, Integer> {
     @Query("select new com.design.samplemgt.dto.SampleClothDTO(cid,clothType,design,model," +
             "sample,status,level,cdate,sdate,customer,comment) from Cloth c where c.enabled = true " +
             "and c.cdate > :startDate and c.cdate < :endDate ")
-    public List<SampleClothDTO> findAllClothByYear(@Param("startDate") final Date startDate,
+    public List<SampleClothDTO> findAllClothByCdate(@Param("startDate") final Date startDate,
                                                    @Param("endDate")final Date endDate);
 }

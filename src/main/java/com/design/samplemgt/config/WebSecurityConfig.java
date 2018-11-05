@@ -66,7 +66,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                 // Submit URL of login page.
                 .loginProcessingUrl("/node_security_check") // Submit URL
                 .loginPage("/login")//
-                .defaultSuccessUrl("/home")//
+                .defaultSuccessUrl("/home/2018")//
                 .failureUrl("/login?error=true")//
                 .usernameParameter("username")//
                 .passwordParameter("password")

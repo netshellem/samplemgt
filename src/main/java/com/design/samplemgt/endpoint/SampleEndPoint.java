@@ -52,14 +52,13 @@ public class SampleEndPoint {
         return clothRepository.findAllCloth();
     }*/
 
-    @ApiOperation(value = "get all cloth")
+    @ApiOperation(value = "Get all cloth")
     @ApiResponses(
             value = {@ApiResponse(code = 200, message = "Success"), @ApiResponse(code = 500, message = "InternalServerError")})
-    @PostMapping(value =  "/GetAllCloth",
-            produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
+    @RequestMapping(value = "/GetAllCloth/{year}", method = RequestMethod.POST)
     @ResponseBody
-    public List<SampleClothDTO> GetAllCloth(@RequestParam(value="year") int year){
-        System.out.println("========================="+ year);
+    public List<SampleClothDTO> GetAllClothes(@PathVariable("year") int year){
+       // System.out.println("========================="+ year);
         return clothRepository.findAllCloth(year);
     }
 

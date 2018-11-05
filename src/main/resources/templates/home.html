@@ -46,7 +46,7 @@
     <ul class="nav nav-tabs" role="tablist">
         <li  th:each="year : ${navilist}">
             <a  th:with="isActive=(${year}==${activeYear})" th:class="${isActive}?'nav-link active': 'nav-link'"
-                th:href="@{'/home?year=' + ${year}}" th:text="${year}"></a>
+                th:href="@{'/home/' + ${year}}" th:text="${year}"></a>
         </li>
     </ul>
         <div id="toolbar">
@@ -63,53 +63,46 @@
                         </select>
 
                     </div>
-                    <div class="form-group">
-                        <button type="button" class="btn btn-default" aria-label="Left Align">
-                            <span class="glyphicon glyphicon-align-left" aria-hidden="true"></span>
-                        </button>
-                        <select name="querystatus" class="form-control" type="text">
-                            <option value="">请选择</option>
-                            <option value="0">库存</option>
-                            <option value="1">售出</option>
-                            <option value="2">退货</option>
-                            <option value="3">赠送</option>
-                            <option value="4">复色</option>
-                            <option value="5">贴牌</option>
-                            <option value="6">合作</option>
-                        </select>
-
-                    </div>
-
-
                 <div class="form-group form-group">
                     <button type="button" class="btn btn-default" aria-label="Left Align">
-                        <span class="glyphicon glyphicon-align-left" aria-hidden="true"></span>
+                        <span class="glyphicon glyphicon-time" aria-hidden="true"></span>
                     </button>
                     <input name="start" class="form-control"
-                           type="text" id="query_start">
+                           type="text" id="query_start"  placeholder="2016-01-01">
                 </div>
 
                 <div class="form-group">
                     <button type="button" class="btn btn-default" aria-label="Left Align">
-                        <span class="glyphicon glyphicon-align-left" aria-hidden="true"></span>
+                        <span class="glyphicon glyphicon-arrow-right" aria-hidden="true"></span>
                     </button>
                     <input name="end" class="form-control"
-                           type="text" id="query_end">
+                           type="text" id="query_end" placeholder="2030-12-31">
 
                 </div>
 
+                <div class="form-group">
+                    <button type="button" class="btn btn-default" aria-label="Left Align">
+                        <span class="glyphicon glyphicon-stats" aria-hidden="true"></span>
+                    </button>
+                    <select name="querystatus" class="form-control" type="text">
+                        <option value="">请选择</option>
+                        <option value="0">库存</option>
+                        <option value="1">售出</option>
+                        <option value="2">退货</option>
+                        <option value="3">赠送</option>
+                        <option value="4">复色</option>
+                        <option value="5">贴牌</option>
+                        <option value="6">合作</option>
+                    </select>
 
+                </div>
 
                 <div class="form-group">
                     <button type="button" class="btn btn-default" aria-label="Left Align">
-                        <span class="glyphicon glyphicon-align-left" aria-hidden="true"></span>
+                        <span class="glyphicon glyphicon-user" aria-hidden="true"></span>
                     </button>
                     <input name="searchname" class="form-control" type="text"
                            placeholder="张三">
-                </div>
-                <div class="form-group">
-                    <input name="year" class="form-control" type="hidden" id="activeyear"
-                           value="2018">
                 </div>
                 <div class="form-group">
                     <button id="ok" type="submit" class="btn btn-default">OK</button>
@@ -119,6 +112,7 @@
         </div>
         <table id="table"
                data-toolbar="#toolbar"
+               data-ajax="ajaxRequest"
                data-search="true"
                data-editable-emptytext="-"
                data-query-params="queryParams">
@@ -151,10 +145,30 @@
 
 <script  th:inline="javascript">
  var year = [[${activeYear}]];
+
+
 $(function () {
 	$('#table').bootstrapTable({
 		locale:'zh-CN',
-		url: '/GetAllCloth?year='+year,
+ajax : function (request) {
+        $.ajax({
+            type : "GET",
+            url : "/GetAllCloth/2018",
+			contentType: "application/json;charset=utf-8",
+			dataType:"jsonp",
+			data:'',
+			jsonp:'callback',
+            success : function (msg) {
+				request.success({
+                    row : msg
+                });
+                $('#table').bootstrapTable('load', msg);
+            },
+			error:function(){
+				alert("错误");
+			}
+        });
+	},
 		method:'post',
 		cache:'false',
 		pagination:'true',
