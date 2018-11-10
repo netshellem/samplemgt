@@ -1,11 +1,11 @@
 package com.design.samplemgt.dto;
 
-public enum ClothTypeEnum {
-    COAT("风衣",1), FEATHER("羽绒服",2), COTTON("棉服",3);
+public enum OriginEnum {
+    BEIJING("北京",1), HANGZHOU("杭州",2), KEQIAO("柯桥",3);
     private String name;
     private int index;
     public static String getName(int index) {
-        for (ClothTypeEnum c : ClothTypeEnum.values()) {
+        for (OriginEnum c : OriginEnum.values()) {
             if (c.getIndex() == index) {
                 return c.name;
             }
@@ -13,7 +13,7 @@ public enum ClothTypeEnum {
         return null;
     }
 
-    private ClothTypeEnum(String name, int index) {
+    private OriginEnum(String name, int index) {
         this.name = name;
         this.index = index;
     }

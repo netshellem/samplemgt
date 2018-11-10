@@ -32,8 +32,8 @@ public class SampleClothDTO {
     @JsonProperty("status")
     public String status;
 
-    @JsonProperty("qty")
-    public String qty;
+    @JsonProperty("origin")
+    public String origin;
 
     @JsonProperty("start_date")
     public Date cdate;

@@ -93,12 +93,12 @@ public class Cloth {
         this.comment = comment;
     }
 
-    public String getLevel() {
-        return level;
+    public String getOrigin() {
+        return origin;
     }
 
-    public void setLevel(String level) {
-        this.level = level;
+    public void setOrigin(String level) {
+        this.origin = origin;
     }
 
     public AppUser getAppuser() {
@@ -144,8 +144,8 @@ public class Cloth {
     @Column(name = "comment", nullable = true)
     private String comment;
 
-    @Column(name = "level", nullable = true)
-    private String level;
+    @Column(name = "origin", nullable = true)
+    private String origin;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "appuser", nullable = false)

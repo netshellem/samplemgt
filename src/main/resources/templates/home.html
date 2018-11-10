@@ -40,7 +40,7 @@
 <body>
 
 <div class="container">
-    <h2>样衣管理系统</h2>
+    <h4>样衣管理系统</h4>
     <br>
     <!-- Nav tabs -->
     <ul class="nav nav-tabs" role="tablist">
@@ -48,6 +48,17 @@
             <a  th:with="isActive=(${year}==${ActiveYear})" th:class="${isActive}?'nav-link active': 'nav-link'"
                 th:href="@{'/home/' + ${year}}" th:text="${year}"></a>
         </li>
+
+        <li class="dropdown pull-right"><a href="#"
+                                           data-toggle="dropdown" class="dropdown-toggle">管理<strong
+                class="caret"></strong></a>
+            <ul class="dropdown-menu">
+                <li><a href="./index2017.jsp">人员管理</a></li>
+                <li><a href="./index2016.jsp">用户管理</a></li>
+                <li><a href="../admin/changepass.jsp">修改密码</a></li>
+                <li class="divider"></li>
+                <li><a href="../LogoutServlet">注销</a></li>
+            </ul></li>
     </ul>
 
 <br>
@@ -86,13 +97,13 @@
                     </button>
                     <select name="status" class="form-control" type="text">
                         <option value="">请选择</option>
-                        <option value="0">库存</option>
-                        <option value="1">售出</option>
-                        <option value="2">退货</option>
-                        <option value="3">赠送</option>
-                        <option value="4">复色</option>
-                        <option value="5">贴牌</option>
-                        <option value="6">合作</option>
+                        <option value="库存">库存</option>
+                        <option value="售出">售出</option>
+                        <option value="退货">退货</option>
+                        <option value="赠送">赠送</option>
+                        <option value="复色">复色</option>
+                        <option value="贴牌">贴牌</option>
+                        <option value="合作">合作</option>
                     </select>
 
                 </div>
@@ -182,12 +193,12 @@ $(function () {
 		sidePagination: 'client',
 		clickToSelect: true,
         pageNumber: 1,
-        pageSize: 50,
+        pageSize: 25,
         pageList: [10, 25, 50, 100],
         striped: true,
         sortName:'cid',
 		sortOrder: 'desc',
-		height: 400,
+		height: 680,
         uniqueId: 'cid',
         cardView: false,
         detailView: false,
@@ -256,9 +267,9 @@ $(function () {
             sortable: false
         },
         {
-            field: 'qty',
+            field: 'origin',
             sortable: true,
-            title: '质量'
+            title: '产地'
         },
         {
             field: 'status',

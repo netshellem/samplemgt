@@ -41,7 +41,8 @@ public class ClothServiceImpl implements ClothService {
 
             predicates.add(cb.isTrue(root.get("enabled")));
             if(!param.status.isEmpty())
-                predicates.add(cb.equal(root.get("status"),param.status));
+                predicates.add(cb.equal(root.get("status"), param.status));
+
             DateFormat format = new SimpleDateFormat("yyyy-MM-dd");
             if(Integer.parseInt(param.condition) == 0){
                 datePath =  root.<Date>get("cdate");
@@ -74,7 +75,6 @@ public class ClothServiceImpl implements ClothService {
                 if(worker != null){
                     System.out.println("$$$worker found");
                     if(worker.getWorkType().equals(WorkerTypeEnum.getName(3))) path = root.get("design");
-                    System.out.print(worker.getWorkType().equals(WorkerTypeEnum.getName(1)));
                     if(worker.getWorkType().equals(WorkerTypeEnum.getName(1))) path = root.get("sample");
                     if(worker.getWorkType().equals(WorkerTypeEnum.getName(2))) path = root.get("model");
                     predicates.add(cb.equal(path, param.keyword));

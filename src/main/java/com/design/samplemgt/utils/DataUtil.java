@@ -23,7 +23,7 @@ public class DataUtil {
             sample.customer = c.getCustomer();
             sample.model = c.getModel();
             sample.sample = c.getSample();
-            sample.qty = c.getLevel();
+            sample.origin = c.getOrigin();
             sample.status = c.getStatus();
             sample.sdate = c.getSdate();
             return sample;
