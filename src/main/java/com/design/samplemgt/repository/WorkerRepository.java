@@ -9,4 +9,6 @@ public interface WorkerRepository extends CrudRepository<Worker, Integer> {
 
     public List<Worker> findByWorkType(String workType);
 
+    public List<Worker> findByWorkerName(String workerName);
+
 }

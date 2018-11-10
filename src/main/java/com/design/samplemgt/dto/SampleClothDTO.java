@@ -35,10 +35,10 @@ public class SampleClothDTO {
     @JsonProperty("qty")
     public String qty;
 
-    @JsonProperty("starttime")
+    @JsonProperty("start_date")
     public Date cdate;
 
-    @JsonProperty("endtime")
+    @JsonProperty("end_date")
     public Date sdate;
 
     @JsonProperty("customer")

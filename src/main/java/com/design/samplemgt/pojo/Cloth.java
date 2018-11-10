@@ -154,6 +154,14 @@ public class Cloth {
     @Column(name = "enabled", length = 1, nullable = false)
     private boolean enabled;
 
+    public String getStatus() {
+        return status;
+    }
+
+    public void setStatus(String status) {
+        this.status = status;
+    }
+
     @Column(name = "status",  nullable = true)
     private String status;
 }

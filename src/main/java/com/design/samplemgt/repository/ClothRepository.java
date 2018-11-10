@@ -1,29 +1,26 @@
 package com.design.samplemgt.repository;
 
-import com.design.samplemgt.dto.SampleClothDTO;
-import com.design.samplemgt.pojo.AppRole;
 import com.design.samplemgt.pojo.Cloth;
-import org.springframework.data.jpa.repository.Query;
+import org.springframework.data.jpa.domain.Specification;
+import org.springframework.data.jpa.repository.JpaSpecificationExecutor;
 import org.springframework.data.repository.CrudRepository;
-import org.springframework.data.repository.query.Param;
 
 import java.util.Date;
 import java.util.List;
 
-public interface ClothRepository  extends CrudRepository<Cloth, Integer> {
+public interface ClothRepository  extends CrudRepository<Cloth, Integer>,
+        JpaSpecificationExecutor<Cloth> {
 
+/*
     @Query("select new com.design.samplemgt.dto.SampleClothDTO(cid,clothType,design,model," +
             "sample,status,level,cdate,sdate,customer,comment) from Cloth c where c.enabled = true")
-    public List<SampleClothDTO> findAllCloth();
+    public List<SampleClothDTO> findCloth();
 
     @Query("select new com.design.samplemgt.dto.SampleClothDTO(cid,clothType,design,model," +
             "sample,status,level,cdate,sdate,customer,comment) from Cloth c where c.enabled = true and YEAR(c.cdate)= :year")
     public List<SampleClothDTO> findAllCloth(int year);
+*/
+    //public List<Cloth> findAll (Specification<Cloth> specification);
+    List<Cloth> findByCdateBetween(Date start, Date end);
 
-
-    @Query("select new com.design.samplemgt.dto.SampleClothDTO(cid,clothType,design,model," +
-            "sample,status,level,cdate,sdate,customer,comment) from Cloth c where c.enabled = true " +
-            "and c.cdate > :startDate and c.cdate < :endDate ")
-    public List<SampleClothDTO> findAllClothByCdate(@Param("startDate") final Date startDate,
-                                                   @Param("endDate")final Date endDate);
 }

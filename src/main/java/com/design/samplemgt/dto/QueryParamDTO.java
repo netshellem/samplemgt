@@ -20,13 +20,16 @@ public class QueryParamDTO {
     @JsonProperty("end")
     public String end;
 
-    @JsonProperty("querystatus")
-    public String querystatus;
+    @JsonProperty("status")
+    public String status;
 
-    @JsonProperty("searchname")
-    public String searchname;
+    @JsonProperty("keyword")
+    public String keyword;
 
-    @JsonProperty("direction")
-    public String direction;
+    @JsonProperty("condition")
+    public String condition;
+
+    @JsonProperty("year")
+    public String year;
 
 }

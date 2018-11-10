@@ -5,7 +5,11 @@ import javax.servlet.http.HttpServletResponse;
 
 import com.design.samplemgt.dto.QueryParamDTO;
 import com.design.samplemgt.dto.SampleClothDTO;
+import com.design.samplemgt.dto.SampleClothPageDTO;
+import com.design.samplemgt.pojo.Cloth;
 import com.design.samplemgt.repository.ClothRepository;
+import com.design.samplemgt.service.ClothService;
+import com.design.samplemgt.utils.DataUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
@@ -27,39 +31,23 @@ import java.util.List;
 public class SampleEndPoint {
 
     @Autowired
-    ClothRepository clothRepository;
+    ClothService clothService;
 
-/*    @ApiOperation(value = "get all cloth")
+    @ApiOperation(value = "Find all enabled clothes ")
     @ApiResponses(
             value = {@ApiResponse(code = 200, message = "Success"), @ApiResponse(code = 500, message = "InternalServerError")})
-    @PostMapping(value =  "/GetAllCloth",
-            produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
+    @RequestMapping(value = "/GetSamples", method = RequestMethod.POST)
     @ResponseBody
-    public List<SampleClothDTO> GetAllCloth(@RequestBody(required = false) QueryParamDTO query){
-        if(query == null) {
-            SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd");
-            Date startDate = null;
-            Date endDate = null;
-            try {
-                startDate = formatter.parse(year + "-01-01");
-                endDate = formatter.parse(year + "-12-31");
-                return clothRepository.findAllClothByYear(startDate, endDate);
-            } catch (ParseException e) {
-                e.printStackTrace();
-            }
+    public List<SampleClothDTO> GetSamples(@RequestBody QueryParamDTO query){
+       //System.out.println("========================="+ query.condition);
+
+        if(!query.year.equals("")){
+            List<Cloth> clothes = clothService.findClothByYear(query.year);
+            return DataUtil.ConvertToDTO(clothes);
         }
-
-        return clothRepository.findAllCloth();
-    }*/
-
-    @ApiOperation(value = "Get all cloth")
-    @ApiResponses(
-            value = {@ApiResponse(code = 200, message = "Success"), @ApiResponse(code = 500, message = "InternalServerError")})
-    @RequestMapping(value = "/GetAllCloth/{year}", method = RequestMethod.POST)
-    @ResponseBody
-    public List<SampleClothDTO> GetAllClothes(@PathVariable("year") int year){
-       // System.out.println("========================="+ year);
-        return clothRepository.findAllCloth(year);
+        List<Cloth> clothes = clothService.findClothByQuery(query);
+        List<SampleClothDTO> result = DataUtil.ConvertToDTO(clothes);
+        return result;
     }
 
 }
