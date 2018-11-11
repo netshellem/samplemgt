@@ -11,4 +11,8 @@ public interface WorkerRepository extends CrudRepository<Worker, Integer> {
 
     public List<Worker> findByWorkerName(String workerName);
 
+    Boolean existsByWorkerName(String workerName);
+
+    public List<Worker> findAll();
+
 }

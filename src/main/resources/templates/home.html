@@ -1,6 +1,6 @@
 <!DOCTYPE html>
 <html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org"
-      xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity3">
+      xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity4">
 <head>
     <meta charset="utf-8">
     <!--<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">-->
@@ -14,17 +14,18 @@
     <!-- Custom styles for this template -->
 
     <link rel="stylesheet" type="text/css"
-          href="/css/bootstrap/bootstrap-table.css" th:href="@{/css/bootstrap-table.min.css}"/>
+          href="/css/bootstrap-table.css" th:href="@{/css/bootstrap-table.min.css}"/>
 
     <link rel="stylesheet" type="text/css"
-          href="/css/bootstrap/bootstrap-table-filter-control.css"
+          href="/css/bootstrap-table-filter-control.css"
           th:href="@{/css/bootstrap-table-filter-control.css}"/>
-    <link href="/css/bootstrap/bootstrap-editable.css" type="text/css"
+    <link href="/css/bootstrap-editable.css" type="text/css"
           rel="stylesheet" th:href="@{/css/bootstrap-editable.css}"/>
     <!-- Optional theme-->
     <link rel="stylesheet" type="text/css"
-          href="/css/bootstrap/bootstrap-theme.min.css" th:href="@{/css/bootstrap-theme.min.css}"/>
-    <link rel="stylesheet" type="text/css" href="/css/bootstrap/datetimepicker.css" th:href="@{/css/datetimepicker.css}"/>
+          href="/css/bootstrap-theme.min.css" th:href="@{/css/bootstrap-theme.min.css}"/>
+    <link rel="stylesheet" type="text/css" href="/css/datetimepicker.css" th:href="@{/css/datetimepicker.css}"/>
+    <link rel="stylesheet" type="text/css" href="/css/bootstrapValidator.css"  th:href="@{/css/bootstrapValidator.css}"/>
     <title>样衣管理系统</title>
 </head>
 <script src="/js/jquery.min.js"></script>
@@ -37,10 +38,12 @@
 <script src="/js/bootstrap/bootstrap-table-editable.js"></script>
 <script src="/js/bootstrap/bootstrap-datetimepicker.js"></script>
 <script src="/js/bootstrap/locale/bootstrap-datetimepicker.zh-CN.js"></script>
+<script src="/js/bootstrap/bootstrapValidator.js"></script>
+
 <body>
 
 <div class="container">
-    <h4>样衣管理系统</h4>
+    <h2>样衣管理系统</h2>
     <br>
     <!-- Nav tabs -->
     <ul class="nav nav-tabs" role="tablist">
@@ -53,14 +56,44 @@
                                            data-toggle="dropdown" class="dropdown-toggle">管理<strong
                 class="caret"></strong></a>
             <ul class="dropdown-menu">
-                <li><a href="./index2017.jsp">人员管理</a></li>
-                <li><a href="./index2016.jsp">用户管理</a></li>
-                <li><a href="../admin/changepass.jsp">修改密码</a></li>
+                <li><a href="/artist">人员管理</a></li>
+                <li><a href="/admin/user">用户管理</a></li>
+                <li><a href="#" data-toggle="modal" data-target="#ChangePasswordModal">修改密码</a></li>
                 <li class="divider"></li>
-                <li><a href="../LogoutServlet">注销</a></li>
+                <li><a href="/logout">注销</a></li>
             </ul></li>
     </ul>
-
+    <div class="modal fade" id="ChangePasswordModal" tabindex="-1" role="dialog" aria-labelledby="ChangePasswordModalLabel" aria-hidden="true">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="ChangePasswordModalLabel">修改密码</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <form id="password-modal-form">
+                        <div class="form-group">
+                            <label for="pass" class="form-control-label">新密码</label>
+                            <div class="controls">
+                                <input type="password" class="form-control" id="pass" name="pass">
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label for="confirm" class="form-control-label">再次输入密码</label>
+                            <div class="controls">
+                                <input type="password" class="form-control" id="confirm" name="confirm"></div>
+                        </div>
+                    </form>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">关闭</button>
+                    <button type="button" class="btn btn-primary" name="subpass" id="subpass">确认</button>
+                </div>
+            </div>
+        </div>
+    </div>
 <br>
         <div id="querybar">
             <div class="form-inline" role="form">
@@ -126,8 +159,60 @@
 
             </div>
             <div id="toolbar">
-                <button id="delbtn" class="btn  btn-primary">删除</button>
-                <button id="addbtn" class="btn  btn-success">新增样衣</button>
+
+                <button id="delbtn" class="btn  btn-primary" sec:authorize="hasRole('ROLE_ADMIN')">删除</button>
+
+                <button id="addbtn" class="btn  btn-success" data-toggle="modal" data-target="#exampleModal">
+                    新增样衣
+                </button>
+                <div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                    <div class="modal-dialog" role="document">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <h5 class="modal-title" id="exampleModalLabel">新增样衣</h5>
+                                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                    <span aria-hidden="true">&times;</span>
+                                </button>
+                            </div>
+                            <div class="modal-body">
+                                <form id="modal-form">
+                                    <div class="form-group">
+                                        <label for="cid" class="form-control-label">样衣编号</label>
+                                        <input type="text" class="form-control" id="cid">
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="clothtype" class="form-control-label">样衣类型</label>
+                                        <input type="text" class="form-control" id="clothtype">
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="create_date" class="form-control-label">入库日期</label>
+                                        <input type="text" class="form-control" id="create_date">
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="designer" class="form-control-label">设计师</label>
+                                        <input type="text" class="form-control" id="designer">
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="model" class="form-control-label">版师</label>
+                                        <input type="text" class="form-control" id="model">
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="sample" class="form-control-label">样衣师</label>
+                                        <input type="text" class="form-control" id="sample">
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="origin" class="form-control-label">产地</label>
+                                        <input type="text" class="form-control" id="origin">
+                                    </div>
+                                </form>
+                            </div>
+                            <div class="modal-footer">
+                                <button type="button" class="btn btn-secondary" data-dismiss="modal">关闭</button>
+                                <button type="button" class="btn btn-primary" id="subsample">确认</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
             </div>
         </div>
 
@@ -139,243 +224,55 @@
         </table>
 
 </div>
-
+<script type="text/javascript" src="/js/password.js"></script>
 
 <script type="text/javascript">
-  $("#start_date").datetimepicker({
-  	language: 'zh-CN',
-      format: "yyyy-mm-dd",
-      autoclose: true,
-      todayBtn: true,
-      minView: 'month'
-  });
-
-  $("#end_date").datetimepicker({
-  	language: 'zh-CN',
-      format: "yyyy-mm-dd",
-      autoclose: true,
-      todayBtn: true,
-      minView: 'month'
-  });
-
-
-
-</script>
-
-
-<script  th:inline="javascript">
-// var year = [[${ActiveYear}]];
-
-$(function () {
-	$('#table').bootstrapTable({
-		locale:'zh-CN',
-        ajax : function (request) {
-                $.ajax({
-                    type : "post",
-                    url : "/GetSamples",
-                    contentType: "application/json;charset=utf-8",
-                    dataType : 'json',
-                    data : JSON.stringify(queryParams()),
-                    success : function (msg) {
-                        request.success({
-                            row : msg
-                        });
-                        $('#table').bootstrapTable('load', msg);
-                    },
-                    error:function(){
-                        //alert("错误");
-                    }
-                });
-            },
-
-		cache:'false',
-		pagination:'true',
-		sidePagination: 'client',
-		clickToSelect: true,
-        pageNumber: 1,
-        pageSize: 25,
-        pageList: [10, 25, 50, 100],
-        striped: true,
-        sortName:'cid',
-		sortOrder: 'desc',
-		height: 680,
-        uniqueId: 'cid',
-        cardView: false,
-        detailView: false,
-        columns: [
- 		{
-			field: 'state',
-			checkbox: true
- 		},
- 		{
- 			field: 'id',
- 			title: '序号',
- 			formatter: function(value, row,index)
- 			{
- 				return index +1;
- 			}
- 		},
-        {
-            field: 'cid',
-            title: '样衣编号',
-            sortable: true,
-            sorter:
-            	function priceSorter(a, b) {
-            	var tmp1 = a.substring(0,2);
-            	var tmp2 = b.substring(0,2);
-                if (tmp1 > tmp2) return 1;
-                if (tmp1 < tmp2) return -1;
-                a = a.substring(2,5);
-                b = b.substring(2,5);
-
-                var n1 = parseInt(a);
-                var n2 = parseInt(b);
-                if (!isNaN(n1) && !isNaN(n2))
-                {
-                	if (n1 > n2) return 1;
-                	if (n1 < n2) return -1;
-                }
-
-                n1 = parseInt(a.substring(5));
-                n2 = parseInt(a.substring(5));
-                if (!isNaN(n1) && !isNaN(n2))
-                {
-                	if (n1 > n2) return 1;
-                	if (n1 < n2) return -1;
-                }
-                return 0;
-            }
-        },
-        {
-            field: 'type',
-            title: '样衣类型',
-            sortable: false
-        },
-        {
-            field: 'designer',
-            title: '设计师',
-            sortable: false
-        },
-        {
-            field: 'model',
-            title: '版师',
-            sortable: false
-        },
-        {
-            field: 'sample',
-            title: '样衣师',
-            sortable: false
-        },
-        {
-            field: 'origin',
-            sortable: true,
-            title: '产地'
-        },
-        {
-            field: 'status',
-            sortable: true,
-            sorter: function(a,b){return a.localeCompare(b)},
-            title: '状态'
-        },
-        {
-            field: 'start_date',
-            title: '入库时间',
-            sortable: true,
-            sorter: function(a,b){
-            	var tmp1 = a.substring(0,4);
-            	var tmp2 = b.substring(0,4);
-                if (tmp1 > tmp2) return 1;
-                if (tmp1 < tmp2) return -1;
-                n1 = a.substring(5,7);
-                n2 = b.substring(5,7);
-                if (n1 > n2) return 1;
-                if (n1 < n2) return -1;
-
-                n1 = a.substring(8);
-                n2 = b.substring(8);
-                if (n1 > n2) return 1;
-                if (n1 < n2) return -1;
-                return 0;
-            }
-        },
-        {
-            field: 'customer',
-            title: '客户'
-        },
-        {
-            field: 'end_date',
-            sortable: true,
-            sorter: function(a,b){
-            	if (a === null || a === undefined || a === '') {
-            		 a = '-';
-            		}
-            	if (b === null || b === undefined || b === '') {
-           		 b = '-';
-           		}
-            	if((a.substring(0,1)=='-') &&
-            			(b.substring(0,1)!='-'))
-            		return -1;
-            	if((b.substring(0,1)=='-') &&
-            			(a.substring(0,1)!='-'))
-            		return 1;
-            	var tmp1 = a.substring(0,4);
-            	var tmp2 = b.substring(0,4);
-
-                if (tmp1 > tmp2) return 1;
-                if (tmp1 < tmp2) return -1;
-                n1 = a.substring(5,7);
-                n2 = b.substring(5,7);
-                if (n1 > n2) return 1;
-                if (n1 < n2) return -1;
-
-                n1 = a.substring(8);
-                n2 = b.substring(8);
-                if (n1 > n2) return 1;
-                if (n1 < n2) return -1;
-                return 0;
-            },
-            title: '出库时间'
-
-        },
-        {
-            field: 'comment',
-
-            title: '备注'
-        }]
-
-
-	});
-	$('#addbtn').click(function (){window.location.href="add.jsp";});
-});
-var $table = $('#table');
-var $ok = $('#ok');
-var $delbutton = $('#delbtn');
-$(function () {
-    $ok.click(function () {
-        document.getElementById("activeyear").value="";
-        $table.bootstrapTable('refresh');
-    });
-});
-
-function queryParams() {
+//$("#exampleModal").modal({backdrop:false});
+$(document).ready(function(){
+$("#subsample").click(function(e){
     var params = {};
-    $('#querybar').find('input[name]').each(function () {
-        params[$(this).attr('name')] = $(this).val();
+    $('#modal-form').find('input[id]').each(function () {
+        params[$(this).attr('id')] = $(this).val();
     });
-    $('#querybar').find('select[name]').each(function () {
-        params[$(this).attr('name')] = $(this).val();
-    });
-    return params;
-}
+     $.ajax({
+                url: "/AddSample",
+                contentType: "application/json;charset=utf-8",
+                dataType : 'json',
+                type: "POST",
+                data : JSON.stringify(params),
+                success: function(data){
+                    $("#exampleModal").modal('hide');
+                    var $parent =  $('#table');
+                     $parent.bootstrapTable('refresh');
+                },
+                error:function(){
+                    alert("出错了");
+                    $("#exampleModal").modal('hide');
+                }
+                });
+            });
+ });
+ $("#exampleModal").on("hidden.bs.modal", function() {
+  $(this).removeData("bs.modal");
+});
+var $calendar = {
+  	language: 'zh-CN',
+      format: "yyyy-mm-dd",
+      autoclose: true,
+      todayBtn: true,
+      minView: 'month'
+  };
+  $("#start_date").datetimepicker($calendar);
 
-function responseHandler(res) {
-    return res.rows;
-}
+  $("#end_date").datetimepicker($calendar);
 
-
-
+  $("#create_date").datetimepicker($calendar);
 
 </script>
+<div th:switch="${#authorization.expression('hasRole(''ADMIN'')')}">
+    <script th:case="true" src="/admin/js/admin.js"> </script>
+    <script th:case="false" src="/js/user.js"> </script>
+</div>
 
 </body>
 </html>

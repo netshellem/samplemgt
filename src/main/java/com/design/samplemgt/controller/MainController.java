@@ -9,6 +9,7 @@ import java.util.List;
 
 import com.design.samplemgt.utils.WebUtils;
 import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.User;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -39,6 +40,24 @@ public class MainController {
 
         return "adminPage";
     }
+    @RequestMapping(value = {"/artist"}, method = RequestMethod.GET)
+    public String artistPage(Model model, @PathVariable(value="year",required = false) String year){
+        Date dNow = new Date();
+        SimpleDateFormat ft = new SimpleDateFormat ("yyyy");
+        String current = ft.format(dNow);
+        int y = Integer.parseInt(current);
+        if(year == null)
+            year = current;
+        model.addAttribute("ActiveYear", year);
+        List<String> naviList=new ArrayList<>();
+
+        while(y > 2015 ){
+            naviList.add(String.valueOf(y));
+            y--;
+        }
+        model.addAttribute("navilist", naviList);
+        return "artist";
+    }
 
     @RequestMapping(value = {"/home/{year}"}, method = RequestMethod.GET)
     public String homePage(Model model, @PathVariable(value="year",required = false) String year) {
@@ -68,7 +87,7 @@ public class MainController {
     @RequestMapping(value = "/logoutSuccessful", method = RequestMethod.GET)
     public String logoutSuccessfulPage(Model model) {
         model.addAttribute("title", "Logout");
-        return "logoutSuccessfulPage";
+        return "login";
     }
 
     @RequestMapping(value = "/userInfo", method = RequestMethod.GET)

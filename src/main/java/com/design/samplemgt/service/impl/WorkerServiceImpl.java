@@ -19,4 +19,19 @@ public class WorkerServiceImpl implements WorkerService {
             return workers.get(0);
         return null;
     }
+
+    @Override
+    public Boolean existByWorkerName(String name) {
+        return workerRepository.existsByWorkerName(name);
+    }
+
+    @Override
+    public List<Worker> FindAllWorkers() {
+        return workerRepository.findAll();
+    }
+
+    @Override
+    public void UpdateWorker(Worker worker) {
+        workerRepository.save(worker);
+    }
 }

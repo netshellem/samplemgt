@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity3">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <meta name="description" content="">
+    <meta name="author" content="">
+    <link rel="icon" href="/img/favicon.ico">
+
+    <title>请登录</title>
+
+    <!-- Bootstrap core CSS -->
+    <link href="/css/bootstrap.min.css" type="text/css" rel="stylesheet" th:href="@{/css/bootstrap.min.css}">
+
+    <!-- Custom styles for this template -->
+    <link href="/css/signin.css" type="text/css" rel="stylesheet" th:href="@{/css/signin.css}">
+</head>
+
+<body class="text-center">
+
+<form class="form-signin" th:action="@{/node_security_check}" method="post">
+    <img class="mb-4" src="/img/bootstrap-solid.svg" alt="" width="72" height="72">
+    <h1 class="h3 mb-3 font-weight-normal">请登录</h1>
+    <label for="signinId" class="sr-only">用户名: </label>
+    <input type="text" name="username" id="signinId" class="form-control" placeholder="用户名" required autofocus>
+    <label for="inputPassword" class="sr-only">密码： </label>
+    <input type="password" id="inputPassword" name="password" class="form-control" placeholder="密码" required>
+    <div class="checkbox mb-3">
+        <label>
+            <input type="checkbox" name="remember-me" id="rememberChkBox"> 记住用户名
+        </label>
+    </div>
+    <div th:if="${param.error}" class="alert alert-danger" role="alert">
+        用户名或密码错误
+    </div>
+    <div th:if="${param.logout}" class="alert alert-info" role="alert">
+        你已退出系统，请重新登录.
+    </div>
+    <button class="btn btn-lg btn-primary btn-block" type="submit" id="sign">登录</button>
+    <p class="mt-5 mb-3 text-muted">&copy; 2017-2018</p>
+</form>
+</body>
+</html>

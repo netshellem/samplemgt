@@ -1,0 +1,211 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity4">
+<head>
+    <meta charset="utf-8">
+    <!--<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">-->
+    <meta name="description" content="">
+    <meta name="author" content="">
+    <link rel="icon" href="/img/favicon.ico"/>
+
+    <!-- Bootstrap core CSS -->
+    <link href="/css/bootstrap.min.css" type="text/css" rel="stylesheet" th:href="@{/css/bootstrap.min.css}"/>
+
+    <!-- Custom styles for this template -->
+
+    <link rel="stylesheet" type="text/css"
+          href="/css/bootstrap-table.css" th:href="@{/css/bootstrap-table.min.css}"/>
+
+    <link rel="stylesheet" type="text/css"
+          href="/css/bootstrap-table-filter-control.css"
+          th:href="@{/css/bootstrap-table-filter-control.css}"/>
+    <link href="/css/bootstrap-editable.css" type="text/css"
+          rel="stylesheet" th:href="@{/css/bootstrap-editable.css}"/>
+    <!-- Optional theme-->
+    <link rel="stylesheet" type="text/css"
+          href="/css/bootstrap-theme.min.css" th:href="@{/css/bootstrap-theme.min.css}"/>
+    <link rel="stylesheet" type="text/css" href="/css/datetimepicker.css" th:href="@{/css/datetimepicker.css}"/>
+    <link rel="stylesheet" type="text/css" href="/css/bootstrapValidator.css"  th:href="@{/css/bootstrapValidator.css}"/>
+    <title>样衣管理系统</title>
+</head>
+<script src="/js/jquery.min.js"></script>
+<script src="/js/popper.min.js"></script>
+<script src="/js/bootstrap/bootstrap.min.js"></script>
+<script src="/js/bootstrap/bootstrap-table.js"></script>
+<script src="/js/bootstrap/locale/bootstrap-table-zh-CN.min.js"></script>
+<script src="/js/bootstrap/bootstrap-table-filter-control.js"></script>
+<script src="/js/bootstrap/bootstrap-editable.js"></script>
+<script src="/js/bootstrap/bootstrap-table-editable.js"></script>
+<script src="/js/bootstrap/bootstrap-datetimepicker.js"></script>
+<script src="/js/bootstrap/locale/bootstrap-datetimepicker.zh-CN.js"></script>
+<script src="/js/bootstrap/bootstrapValidator.js"></script>
+
+<body>
+
+<div class="container">
+    <h2>样衣管理系统</h2>
+    <br>
+    <!-- Nav tabs -->
+    <ul class="nav nav-tabs" role="tablist">
+        <li  th:each="year : ${navilist}">
+            <a  th:with="isActive=(${year}==${ActiveYear})" th:class="${isActive}?'nav-link active': 'nav-link'"
+                th:href="@{'/home/' + ${year}}" th:text="${year}"></a>
+        </li>
+
+        <li class="dropdown pull-right"><a href="#"
+                                           data-toggle="dropdown" class="dropdown-toggle">管理<strong
+                class="caret"></strong></a>
+            <ul class="dropdown-menu">
+                <li><a href="/artist">人员管理</a></li>
+                <li><a href="/admin/user">用户管理</a></li>
+                <li><a href="#" data-toggle="modal" data-target="#ChangePasswordModal">修改密码</a></li>
+                <li class="divider"></li>
+                <li><a href="/logout">注销</a></li>
+            </ul></li>
+    </ul>
+    <div class="modal fade" id="ChangePasswordModal" tabindex="-1" role="dialog" aria-labelledby="ChangePasswordModalLabel" aria-hidden="true">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="ChangePasswordModalLabel">修改密码</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <form id="password-modal-form">
+                        <div class="form-group">
+                            <label for="pass" class="form-control-label">新密码</label>
+                            <div class="controls">
+                                <input type="password" class="form-control" id="pass" name="pass">
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label for="confirm" class="form-control-label">再次输入密码</label>
+                            <div class="controls">
+                                <input type="password" class="form-control" id="confirm" name="confirm"></div>
+                        </div>
+                    </form>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">关闭</button>
+                    <button type="button" class="btn btn-primary" name="subpass" id="subpass">确认</button>
+                </div>
+            </div>
+        </div>
+    </div>
+<br>
+
+        <table id="artisttable"
+               data-search="true"
+               data-editable-emptytext="-">
+        </table>
+
+</div>
+<script type="text/javascript" src="/js/password.js"></script>
+
+<script type="text/javascript">
+ $(function () {
+ $('#artisttable').bootstrapTable({
+        locale:'zh-CN',
+        ajax : function (request) {
+                $.ajax({
+                    type : "get",
+                    url : "/GetAllWorkers",
+                    contentType: "application/json;charset=utf-8",
+                    success : function (msg) {
+                        request.success({
+                            row : msg
+                        });
+                        $('#artisttable').bootstrapTable('load', msg);
+                    },
+                    error:function(){
+                        //alert("错误");
+                    }
+                });
+            },
+
+		cache:'false',
+		pagination:'true',
+		sidePagination: 'client',
+		clickToSelect: true,
+        pageNumber: 1,
+        pageSize: 25,
+        pageList: [10, 25, 50, 100],
+        striped: true,
+        sortName:'id',
+		sortOrder: 'desc',
+		height: 680,
+        uniqueId: 'cid',
+        cardView: false,
+        detailView: false,
+        columns: [
+ 		{
+ 			field: 'id',
+ 			title: '序号',
+ 			formatter: function(value, row,index)
+ 			{
+ 				return index +1;
+ 			}
+ 		},
+ 		 {
+ 			field: 'workerName',
+ 			title: '姓名'
+ 		},
+ 		{
+ 			field: 'workType',
+ 			title: '类型'
+ 		},
+ 		{
+ 			field: 'cdate',
+ 			title: '创建时间'
+ 		}
+ 		,
+ 		{
+ 			field: 'enabled',
+ 			editable: {
+                        type: 'select',
+                        title: '状态',
+                        source:[{value:"1",text:"在职"},{value:"0",text:"离职"}]
+             },
+ 			title: '状态'
+ 		}
+
+ 		],
+
+        onEditableSave: function (field, row, oldValue, $el) {
+                	$('#artisttable').bootstrapTable('resetView');
+                    $.ajax({
+                        type: "post",
+                        contentType:"application/json;charset=utf-8",
+                        url: "/UpdateWorker",
+                        //date:row,
+                        data:JSON.stringify(row),
+                        success: function (data, status) {
+                            if (status == "success") {
+                                alert('提交数据成功');
+                            }
+                        },
+                        error: function () {
+                            alert('编辑失败');
+                            console.log($el);
+                            console.log(oldValue);
+                            if ("undefined" === typeof oldValue) {
+                                console.log("oldValue is undefined");
+                                oldValue = '-';
+                            }
+                            $el[0].innerText = oldValue;
+
+                        },
+                        complete: function () {
+
+                        }
+
+                    });
+                }
+    });
+ });
+</script>
+
+</body>
+</html>

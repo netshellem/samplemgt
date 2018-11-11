@@ -1,6 +1,7 @@
 package com.design.samplemgt.pojo;
 
 import javax.persistence.*;
+import java.util.Date;
 
 @Entity
 @Table(name = "worker", //
@@ -52,4 +53,15 @@ public class Worker {
 
     @Column(name = "enabled",  nullable = false)
     private boolean enabled;
+
+    public Date getCdate() {
+        return cdate;
+    }
+
+    public void setCdate(Date cdate) {
+        this.cdate = cdate;
+    }
+
+    @Column(name = "cdate", nullable = true)
+    private Date cdate;
 }

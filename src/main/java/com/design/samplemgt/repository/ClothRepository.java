@@ -11,7 +11,12 @@ import java.util.List;
 public interface ClothRepository  extends CrudRepository<Cloth, Integer>,
         JpaSpecificationExecutor<Cloth> {
 
-/*
+    List<Cloth> findByEnabledTrueAndCdateBetween(Date start, Date end);
+
+    Cloth save(Cloth cloth);
+
+    Boolean existsByCid(String cid);
+    /*
     @Query("select new com.design.samplemgt.dto.SampleClothDTO(cid,clothType,design,model," +
             "sample,status,level,cdate,sdate,customer,comment) from Cloth c where c.enabled = true")
     public List<SampleClothDTO> findCloth();
@@ -20,7 +25,7 @@ public interface ClothRepository  extends CrudRepository<Cloth, Integer>,
             "sample,status,level,cdate,sdate,customer,comment) from Cloth c where c.enabled = true and YEAR(c.cdate)= :year")
     public List<SampleClothDTO> findAllCloth(int year);
 */
-    //public List<Cloth> findAll (Specification<Cloth> specification);
-    List<Cloth> findByCdateBetween(Date start, Date end);
+
+
 
 }

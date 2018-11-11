@@ -9,7 +9,7 @@ import java.util.Date;
                 @UniqueConstraint(name = "cid_UNIQUE", columnNames = "cid")  })
 public class Cloth {
     @Id
-    @GeneratedValue
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id", nullable = false)
     private int id;
 

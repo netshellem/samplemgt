@@ -32,9 +32,13 @@ public class ClothServiceImpl implements ClothService {
     private WorkerService workerService;
 
     @Override
+    public Cloth Save(Cloth cloth){
+        return clothRepository.save(cloth);
+    }
+
+    @Override
     public List<Cloth> findClothByQuery(QueryParamDTO param){
         return clothRepository.findAll((Specification<Cloth>) (root, query, cb) -> {
-            System.out.println("=============="+ param.toString());
             List<Predicate> predicates = new ArrayList<>();
             Path<Date> datePath = null;
             Path<String> path = null;
@@ -73,13 +77,11 @@ public class ClothServiceImpl implements ClothService {
             if(!param.keyword.isEmpty()){
                 Worker worker = workerService.findByWorkerName(param.keyword);
                 if(worker != null){
-                    System.out.println("$$$worker found");
-                    if(worker.getWorkType().equals(WorkerTypeEnum.getName(3))) path = root.get("design");
                     if(worker.getWorkType().equals(WorkerTypeEnum.getName(1))) path = root.get("sample");
                     if(worker.getWorkType().equals(WorkerTypeEnum.getName(2))) path = root.get("model");
+                    if(worker.getWorkType().equals(WorkerTypeEnum.getName(3))) path = root.get("design");
                     predicates.add(cb.equal(path, param.keyword));
                 }else{
-                    System.out.println("$$$worker NOT found");
                     predicates.add(cb.equal(root.get("design"), param.keyword));
                 }
 
@@ -96,7 +98,7 @@ public class ClothServiceImpl implements ClothService {
         try {
             Date start = format.parse(year + "-01-01");
             Date end = format.parse(year + "-12-31");
-            return clothRepository.findByCdateBetween(start,end);
+            return clothRepository.findByEnabledTrueAndCdateBetween(start,end);
         } catch (ParseException e) {
             e.printStackTrace();
         }
