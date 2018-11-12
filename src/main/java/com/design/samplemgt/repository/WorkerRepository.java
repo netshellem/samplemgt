@@ -7,12 +7,13 @@ import java.util.List;
 
 public interface WorkerRepository extends CrudRepository<Worker, Integer> {
 
-    public List<Worker> findByWorkType(String workType);
+    public List<Worker> findByWorkTypeAndEnabledTrue(String workType);
 
     public List<Worker> findByWorkerName(String workerName);
 
     Boolean existsByWorkerName(String workerName);
 
     public List<Worker> findAll();
+
 
 }

@@ -58,6 +58,24 @@ public class MainController {
         model.addAttribute("navilist", naviList);
         return "artist";
     }
+    @RequestMapping(value = {"/admin/user"}, method = RequestMethod.GET)
+    public String userPage(Model model, @PathVariable(value="year",required = false) String year){
+        Date dNow = new Date();
+        SimpleDateFormat ft = new SimpleDateFormat ("yyyy");
+        String current = ft.format(dNow);
+        int y = Integer.parseInt(current);
+        if(year == null)
+            year = current;
+        model.addAttribute("ActiveYear", year);
+        List<String> naviList=new ArrayList<>();
+
+        while(y > 2015 ){
+            naviList.add(String.valueOf(y));
+            y--;
+        }
+        model.addAttribute("navilist", naviList);
+        return "user";
+    }
 
     @RequestMapping(value = {"/home/{year}"}, method = RequestMethod.GET)
     public String homePage(Model model, @PathVariable(value="year",required = false) String year) {

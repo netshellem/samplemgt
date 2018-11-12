@@ -97,42 +97,41 @@
 <br>
     <div id="toolbar">
         <button id="addbtn" class="btn  btn-success" data-toggle="modal" data-target="#artistModal">
-            新增人员
+            新增用户
         </button>
-        <div class="modal fade" id="artistModal" tabindex="-1" role="dialog" aria-labelledby="artistModalLabel" aria-hidden="true">
+        <div class="modal fade" id="userModal" tabindex="-1" role="dialog" aria-labelledby="userModalLabel" aria-hidden="true">
             <div class="modal-dialog" role="document">
                 <div class="modal-content">
                     <div class="modal-header">
-                        <h5 class="modal-title" id="artistModalLabel">新增人员</h5>
+                        <h5 class="modal-title" id="userModalLabel">新增用户</h5>
                         <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                             <span aria-hidden="true">&times;</span>
                         </button>
                     </div>
                     <div class="modal-body">
-                        <form id="artist-modal-form">
+                        <form id="user-modal-form">
                             <div class="form-group">
-                                <label for="workerName" class="form-control-label">姓名</label>
-                                <input type="text" class="form-control" id="workerName">
+                                <label for="userName" class="form-control-label">姓名</label>
+                                <input type="text" class="form-control" id="userName">
                             </div>
                             <div class="form-group">
-                                <label for="workType" class="form-control-label">工作岗位</label>
+                                <label for="workType" class="form-control-label">职责</label>
                                 <select  class="form-control" id="workType">
-                                    <option value="设计师">设计师</option>
-                                    <option value="版师">版师</option>
-                                    <option value="样衣师">样衣师</option>
+                                    <option value="0">普通用户</option>
+                                    <option value="1">管理员</option>
                                 </select>
                             </div>
                         </form>
                     </div>
                     <div class="modal-footer">
                         <button type="button" class="btn btn-secondary" data-dismiss="modal">关闭</button>
-                        <button type="button" class="btn btn-primary" id="subworker">确认</button>
+                        <button type="button" class="btn btn-primary" id="subuser">确认</button>
                     </div>
                 </div>
             </div>
         </div>
     </div>
-        <table id="artisttable"
+        <table id="usertable"
                data-toolbar="#toolbar"
                data-search="true"
                data-editable-emptytext="-">
@@ -142,7 +141,7 @@
 <script type="text/javascript" src="/js/password.js"></script>
 <script type="text/javascript">
 $(document).ready(function(){
-$("#subworker").click(function(e){
+$("#subuser").click(function(e){
     var params = {};
     $('#artist-modal-form').find('input[id]').each(function () {
         params[$(this).attr('id')] = $(this).val();
@@ -151,14 +150,14 @@ $("#subworker").click(function(e){
         params[$(this).attr('id')] = $(this).val();
     });
      $.ajax({
-                url: "/AddWorker",
+                url: "/AddUser",
                 contentType: "application/json;charset=utf-8",
                 dataType : 'json',
                 type: "POST",
                 data : JSON.stringify(params),
                 success: function(data){
-                    $("#artistModal").modal('hide');
-                    var $parent =  $('#artisttable');
+                    $("#userModal").modal('hide');
+                    var $parent =  $('#usertable');
                      $parent.bootstrapTable('refresh');
                 },
                 error:function(){
@@ -171,18 +170,18 @@ $("#subworker").click(function(e){
 </script>
 <script type="text/javascript">
  $(function () {
- $('#artisttable').bootstrapTable({
+ $('#usertable').bootstrapTable({
         locale:'zh-CN',
         ajax : function (request) {
                 $.ajax({
                     type : "get",
-                    url : "/GetAllWorkers",
+                    url : "/GetAllUser",
                     contentType: "application/json;charset=utf-8",
                     success : function (msg) {
                         request.success({
                             row : msg
                         });
-                        $('#artisttable').bootstrapTable('load', msg);
+                        $('#usertable').bootstrapTable('load', msg);
                     },
                     error:function(){
                         console.log('fail to load data');
@@ -215,19 +214,20 @@ $("#subworker").click(function(e){
  		},
  		 {
  			field: 'id',
- 			visible: false
+            visible: false
  		},
  		 {
- 			field: 'workerName',
+ 			field: 'userName',
  			title: '姓名'
  		},
  		{
- 			field: 'workType',
- 			title: '类型'
- 		},
- 		{
- 			field: 'cdate',
- 			title: '创建时间'
+ 			field: 'isadmin',
+ 			editable: {
+                        type: 'select',
+                        title: '管理员',
+                        source:[{value:"1",text:"是"},{value:"0",text:"否"}]
+             },
+ 			title: '管理员'
  		}
  		,
  		{
@@ -247,7 +247,7 @@ $("#subworker").click(function(e){
                     $.ajax({
                         type: "post",
                         contentType:"application/json;charset=utf-8",
-                        url: "/UpdateWorker",
+                        url: "/UpdateUser",
                         //date:row,
                         data:JSON.stringify(row),
                         success: function (data, status) {

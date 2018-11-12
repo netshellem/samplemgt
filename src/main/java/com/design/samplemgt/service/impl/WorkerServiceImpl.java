@@ -33,5 +33,11 @@ public class WorkerServiceImpl implements WorkerService {
     @Override
     public void UpdateWorker(Worker worker) {
         workerRepository.save(worker);
+        return;
+    }
+
+    @Override
+    public Worker Save(Worker worker) {
+        return workerRepository.save(worker);
     }
 }

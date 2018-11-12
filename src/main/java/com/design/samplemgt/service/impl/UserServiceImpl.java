@@ -8,6 +8,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+
 @Service("UserServiceImpl")
 public class UserServiceImpl implements UserService {
     @Autowired
@@ -22,5 +24,10 @@ public class UserServiceImpl implements UserService {
             appUserRepository.save(user);
         }
 
+    }
+
+    @Override
+    public List<AppUser> findAll() {
+        return appUserRepository.findAll();
     }
 }

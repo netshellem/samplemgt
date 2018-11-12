@@ -13,7 +13,6 @@ public interface ClothRepository  extends CrudRepository<Cloth, Integer>,
 
     List<Cloth> findByEnabledTrueAndCdateBetween(Date start, Date end);
 
-    Cloth save(Cloth cloth);
 
     Boolean existsByCid(String cid);
     /*

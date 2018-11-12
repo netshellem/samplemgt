@@ -31,7 +31,7 @@ public class DataUtil {
         return sampleDTOLists;
     }
 
-    public static List<Cloth> MergeList(List<Cloth> ... lists){
+    public static List<Cloth> MergeList(@org.jetbrains.annotations.NotNull List<Cloth> ... lists){
         List<Cloth> tmp = new ArrayList<Cloth>();
         for (List<Cloth> list : lists) {
             tmp.addAll(list);

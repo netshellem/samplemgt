@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
+import java.util.Date;
 import java.util.List;
 
 @RestController
@@ -44,4 +45,18 @@ public class WorkerEndPoint {
         workerService.UpdateWorker(worker);
         return;
     }
+
+    @ApiOperation(value = "Add worker")
+    @ApiResponses(
+            value = {@ApiResponse(code = 200, message = "Success"), @ApiResponse(code = 500, message = "InternalServerError")})
+    @RequestMapping(value = "/AddWorker", method = RequestMethod.POST)
+    public boolean SaveWorker(@RequestBody Worker worker){
+       // System.out.println("========="+ worker.toString());
+        Date d = new Date();
+        worker.setCdate(d);
+        if(null == workerService.Save(worker))
+            return false;
+        return true;
+    }
+
 }

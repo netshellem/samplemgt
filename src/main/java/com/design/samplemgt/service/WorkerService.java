@@ -10,4 +10,5 @@ public interface WorkerService {
     public Boolean existByWorkerName(String name);
     public List<Worker> FindAllWorkers();
     public void UpdateWorker(Worker worker);
+    public Worker Save(Worker worker);
 }
