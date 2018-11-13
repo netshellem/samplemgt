@@ -8,15 +8,17 @@ import lombok.NoArgsConstructor;
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-public class UserDTO {
-    @JsonProperty("id")
-    public long id;
+public class AddUserDTO {
+
     @JsonProperty("userName")
     public String userName;
 
-    @JsonProperty("enabled")
-    public boolean enabled;
+    @JsonProperty("userType")
+    public String  userType;
 
-    @JsonProperty("isadmin")
-    public String iadmin;
+    @JsonProperty("password1")
+    public String password;
+
+    @JsonProperty("password2")
+    public String confirm;
 }

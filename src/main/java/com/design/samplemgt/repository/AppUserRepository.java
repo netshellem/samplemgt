@@ -10,4 +10,5 @@ public interface AppUserRepository extends CrudRepository<AppUser, Long> {
 
     public AppUser findOneByUserName(String userName);
     public List<AppUser> findAll();
+    public AppUser findByUserId(long userId);
 }

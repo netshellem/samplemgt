@@ -57,7 +57,7 @@
                 class="caret"></strong></a>
             <ul class="dropdown-menu">
                 <li><a href="/artist">人员管理</a></li>
-                <li><a href="/admin/user">用户管理</a></li>
+                <li th:if="${#authorization.expression('hasRole(''ADMIN'')')}"><a href="/admin/user">用户管理</a></li>
                 <li><a href="#" data-toggle="modal" data-target="#ChangePasswordModal">修改密码</a></li>
                 <li class="divider"></li>
                 <li><a href="/logout">注销</a></li>
@@ -96,7 +96,7 @@
     </div>
 <br>
     <div id="toolbar">
-        <button id="addbtn" class="btn  btn-success" data-toggle="modal" data-target="#artistModal">
+        <button id="addbtn" class="btn  btn-success" data-toggle="modal" data-target="#userModal">
             新增用户
         </button>
         <div class="modal fade" id="userModal" tabindex="-1" role="dialog" aria-labelledby="userModalLabel" aria-hidden="true">
@@ -115,8 +115,16 @@
                                 <input type="text" class="form-control" id="userName">
                             </div>
                             <div class="form-group">
-                                <label for="workType" class="form-control-label">职责</label>
-                                <select  class="form-control" id="workType">
+                                <label for="password1" class="form-control-label">密码</label>
+                                <input type="password" class="form-control" id="password1">
+                            </div>
+                            <div class="form-group">
+                                <label for="password2" class="form-control-label">确认密码</label>
+                                <input type="password" class="form-control" id="password2">
+                            </div>
+                            <div class="form-group">
+                                <label for="userType" class="form-control-label">职责</label>
+                                <select  class="form-control" id="userType">
                                     <option value="0">普通用户</option>
                                     <option value="1">管理员</option>
                                 </select>
@@ -140,13 +148,70 @@
 </div>
 <script type="text/javascript" src="/js/password.js"></script>
 <script type="text/javascript">
+    $('#user-modal-form').bootstrapValidator(
+    {
+        message : 'This value is not valid',
+        feedbackIcons : {
+            valid : 'glyphicon glyphicon-ok',
+            invalid : 'glyphicon glyphicon-remove',
+            validating : 'glyphicon glyphicon-refresh'
+        },
+
+        fields : {
+            userName : {
+                group : '.controls',
+                validators : {
+                    notEmpty : {
+                        message : '用户名不能为空'
+                    },
+                    stringLength: {
+                        min: 2,
+                        max: 30,
+                        message: '用户名长度必须要大于2'
+                    },
+                    remote: {
+                        type: 'POST',
+                        url: '/admin/ValidateUser',
+                        message: '用户名已被占用'
+                    }
+                }
+            },
+            password1 : {
+                group : '.controls',
+                validators : {
+                    notEmpty : {
+                        message : '密码不能为空'
+                    },
+                    stringLength : {
+                        min : 6,
+                        max : 30,
+                        message : '密码长度必须大于6小于30'
+                    }
+                }
+            },
+            password2 : {
+                group : '.controls',
+                validators : {
+                    notEmpty : {
+                        message : '密码不能为空'
+                    },
+                    identical : {
+                        field : 'password1',
+                        message : '二次密码不一致'
+                    }
+                }
+            }
+        }
+    });
+</script>
+<script type="text/javascript">
 $(document).ready(function(){
 $("#subuser").click(function(e){
     var params = {};
-    $('#artist-modal-form').find('input[id]').each(function () {
+    $('#user-modal-form').find('input[id]').each(function () {
         params[$(this).attr('id')] = $(this).val();
     });
-    $('#artist-modal-form').find('select[id]').each(function () {
+    $('#user-modal-form').find('select[id]').each(function () {
         params[$(this).attr('id')] = $(this).val();
     });
      $.ajax({
@@ -162,7 +227,7 @@ $("#subuser").click(function(e){
                 },
                 error:function(){
                     alert("添加失败");
-                    $("#artistModal").modal('hide');
+                    $("#user-modal-form").modal('hide');
                 }
                 });
             });
@@ -222,11 +287,6 @@ $("#subuser").click(function(e){
  		},
  		{
  			field: 'isadmin',
- 			editable: {
-                        type: 'select',
-                        title: '管理员',
-                        source:[{value:"1",text:"是"},{value:"0",text:"否"}]
-             },
  			title: '管理员'
  		}
  		,
@@ -235,7 +295,7 @@ $("#subuser").click(function(e){
  			editable: {
                         type: 'select',
                         title: '状态',
-                        source:[{value:"1",text:"在职"},{value:"0",text:"离职"}]
+                        source:[{value:true,text:"在职"},{value:false,text:"离职"}]
              },
  			title: '状态'
  		}
@@ -248,11 +308,12 @@ $("#subuser").click(function(e){
                         type: "post",
                         contentType:"application/json;charset=utf-8",
                         url: "/UpdateUser",
-                        //date:row,
                         data:JSON.stringify(row),
                         success: function (data, status) {
                             if (status == "success") {
                                 alert('提交数据成功');
+                                var $parent =  $('#usertable');
+                                 $parent.bootstrapTable('refresh');
                             }
                         },
                         error: function () {

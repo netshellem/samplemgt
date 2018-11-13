@@ -51,6 +51,7 @@ $(function () {
             field: 'cid',
             title: '样衣编号',
             sortable: true,
+            searchable: true,
             sorter:
             	function priceSorter(a, b) {
             	var tmp1 = a.substring(0,2);
@@ -86,26 +87,31 @@ $(function () {
         {
             field: 'designer',
             title: '设计师',
+            searchable: true,
             sortable: false
         },
         {
             field: 'model',
             title: '版师',
+            searchable: true,
             sortable: false
         },
         {
             field: 'sample',
             title: '样衣师',
+            searchable: true,
             sortable: false
         },
         {
             field: 'origin',
             sortable: true,
+            searchable: false,
             title: '产地'
         },
         {
             field: 'status',
             sortable: true,
+            searchable: false,
             sorter: function(a,b){return a.localeCompare(b)},
             title: '状态'
         },
@@ -113,6 +119,7 @@ $(function () {
             field: 'start_date',
             title: '入库时间',
             sortable: true,
+            searchable: false,
             sorter: function(a,b){
             	var tmp1 = a.substring(0,4);
             	var tmp2 = b.substring(0,4);
@@ -132,11 +139,13 @@ $(function () {
         },
         {
             field: 'customer',
-            title: '客户'
+            title: '客户',
+            searchable: true
         },
         {
             field: 'end_date',
             sortable: true,
+            searchable: false,
             sorter: function(a,b){
             	if (a === null || a === undefined || a === '') {
             		 a = '-';
@@ -171,7 +180,7 @@ $(function () {
         },
         {
             field: 'comment',
-
+            searchable: false,
             title: '备注'
         }]
 

@@ -1,11 +1,13 @@
 package com.design.samplemgt.endpoint;
 
 import com.design.samplemgt.dto.AddSampleDTO;
+import com.design.samplemgt.dto.AddUserDTO;
 import com.design.samplemgt.dto.UserDTO;
 import com.design.samplemgt.pojo.AppUser;
 import com.design.samplemgt.pojo.Cloth;
 import com.design.samplemgt.service.UserRoleService;
 import com.design.samplemgt.service.UserService;
+import com.design.samplemgt.utils.EncrytedPasswordUtils;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiResponse;
 import io.swagger.annotations.ApiResponses;
@@ -31,7 +33,7 @@ public class UserEndPoint {
         userService.UpdatePassword(password);
     }
 
-    @ApiOperation(value = "Update User password")
+    @ApiOperation(value = "Get User list")
     @ApiResponses(
             value = {@ApiResponse(code = 200, message = "Success"), @ApiResponse(code = 500, message = "InternalServerError")})
     @RequestMapping(value = "/GetAllUser", method = RequestMethod.GET)
@@ -44,10 +46,46 @@ public class UserEndPoint {
             dto.id = u.getUserId();
             dto.userName = u.getUserName();
             dto.enabled = u.isEnabled();
-            dto.iadmin = userRoleService.isAdmin(u);
+            if (userRoleService.isAdmin(u))
+                dto.iadmin = "是";
+            else
+                dto.iadmin = "否";
             res.add(dto);
         }
         return res;
 
+    }
+
+    @ApiOperation(value = "Add User")
+    @ApiResponses(
+            value = {@ApiResponse(code = 200, message = "Success"), @ApiResponse(code = 500, message = "InternalServerError")})
+    @RequestMapping(value = "/AddUser", method = RequestMethod.POST)
+    public boolean AddUser(@RequestBody AddUserDTO userDTO){
+        //System.out.println("=============="+userDTO.toString());
+        AppUser user = new AppUser();
+        user.setEnabled(true);
+        user.setUserName(userDTO.userName);
+        user.setEncrytedPassword(EncrytedPasswordUtils.encrytePassword(userDTO.password));
+        if(userService.save(user) == null)
+            return false;
+        if(userDTO.userType.equals("0"))
+            return userRoleService.addRole(false, user);
+        if(userDTO.userType.equals("1"))
+            return userRoleService.addRole(true, user);
+        return true;
+    }
+
+
+    @ApiOperation(value = "Update User")
+    @ApiResponses(
+            value = {@ApiResponse(code = 200, message = "Success"), @ApiResponse(code = 500, message = "InternalServerError")})
+    @RequestMapping(value = "/UpdateUser", method = RequestMethod.POST)
+    public boolean UpdateUser(@RequestBody UserDTO userDTO){
+        AppUser appUser = userService.findByUserId(userDTO.id);
+        System.out.println("=================="+userDTO.enabled);
+        appUser.setEnabled(userDTO.enabled);
+        if(null == userService.save(appUser)) return false;
+
+        return true;
     }
 }

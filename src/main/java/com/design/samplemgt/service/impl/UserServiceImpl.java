@@ -30,4 +30,15 @@ public class UserServiceImpl implements UserService {
     public List<AppUser> findAll() {
         return appUserRepository.findAll();
     }
+
+    @Override
+    public AppUser save(AppUser user) {
+        return appUserRepository.save(user);
+    }
+
+    @Override
+    public AppUser findByUserId(long id) {
+        return appUserRepository.findByUserId(id);
+    }
+
 }
