@@ -11,7 +11,7 @@ $('#password-modal-form').bootstrapValidator(
         fields : {
 
             pass : {
-                group : '.controls',
+                message: '密码验证失败',
                 validators : {
                     notEmpty : {
                         message : '密码不能为空'
@@ -24,7 +24,7 @@ $('#password-modal-form').bootstrapValidator(
                 }
             },
             confirm : {
-                group : '.controls',
+                 message: '密码验证失败',
                 validators : {
                     notEmpty : {
                         message : '密码不能为空'

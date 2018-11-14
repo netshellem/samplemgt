@@ -1,8 +1,6 @@
 package com.design.samplemgt.endpoint;
 
-import com.design.samplemgt.dto.AddSampleDTO;
-import com.design.samplemgt.dto.AddUserDTO;
-import com.design.samplemgt.dto.UserDTO;
+import com.design.samplemgt.dto.*;
 import com.design.samplemgt.pojo.AppUser;
 import com.design.samplemgt.pojo.Cloth;
 import com.design.samplemgt.service.UserRoleService;
@@ -12,6 +10,7 @@ import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiResponse;
 import io.swagger.annotations.ApiResponses;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.ArrayList;
@@ -87,5 +86,20 @@ public class UserEndPoint {
         if(null == userService.save(appUser)) return false;
 
         return true;
+    }
+
+    @ApiOperation(value = "ValidateUserName")
+    @ApiResponses(
+            value = {@ApiResponse(code = 200, message = "Success"), @ApiResponse(code = 500, message = "InternalServerError")})
+    @RequestMapping(value = "/ValidateUserName", method = RequestMethod.POST, consumes = MediaType.APPLICATION_FORM_URLENCODED_VALUE,
+            produces = "application/json;charset=UTF-8")
+    public ValidateDTO ValidateUserName(ValidateWorkerDTO user){
+        ValidateDTO v = new ValidateDTO();
+        v.valid = false;
+        if( userService.existByUserName(user.userName)){
+            return v;
+        }
+        v.valid = true;
+        return v;
     }
 }

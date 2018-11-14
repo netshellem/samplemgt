@@ -7,7 +7,10 @@ import java.util.Date;
 import java.util.List;
 
 
+import com.design.samplemgt.repository.WorkerRepository;
+import com.design.samplemgt.service.WorkerService;
 import com.design.samplemgt.utils.WebUtils;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.User;
@@ -22,6 +25,9 @@ import javax.validation.constraints.Null;
 
 @Controller
 public class MainController {
+
+    @Autowired
+    WorkerService workerService;
 
     @RequestMapping(value = {"/", "/login"}, method = RequestMethod.GET)
     public String loginPage(Model model) {
@@ -74,8 +80,10 @@ public class MainController {
             y--;
         }
         model.addAttribute("navilist", naviList);
+
         return "user";
     }
+
 
     @RequestMapping(value = {"/home/{year}"}, method = RequestMethod.GET)
     public String homePage(Model model, @PathVariable(value="year",required = false) String year) {
@@ -93,6 +101,9 @@ public class MainController {
             y--;
         }
         model.addAttribute("navilist", naviList);
+        model.addAttribute("designlist", workerService.findByWorkTypeAndEnabledTrue("设计师"));
+        model.addAttribute("modellist", workerService.findByWorkTypeAndEnabledTrue("版师"));
+        model.addAttribute("samplelist", workerService.findByWorkTypeAndEnabledTrue("样衣师"));
         return "home";
     }
 

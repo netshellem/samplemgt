@@ -85,12 +85,13 @@
                             <div class="controls">
                                 <input type="password" class="form-control" id="confirm" name="confirm"></div>
                         </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-secondary" data-dismiss="modal">关闭</button>
+                            <button type="submit" class="btn btn-primary" name="subpass" id="subpass">确认</button>
+                        </div>
                     </form>
                 </div>
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary" data-dismiss="modal">关闭</button>
-                    <button type="button" class="btn btn-primary" name="subpass" id="subpass">确认</button>
-                </div>
+
             </div>
         </div>
     </div>
@@ -178,31 +179,48 @@
                                 <form id="modal-form">
                                     <div class="form-group">
                                         <label for="cid" class="form-control-label">样衣编号</label>
-                                        <input type="text" class="form-control" id="cid">
+                                        <input type="text" class="form-control" id="cid" name="cid">
                                     </div>
                                     <div class="form-group">
                                         <label for="clothtype" class="form-control-label">样衣类型</label>
-                                        <input type="text" class="form-control" id="clothtype">
+                                        <select  class="form-control" id="clothtype">
+                                            <option value="羽绒服">羽绒服</option>
+                                            <option value="棉衣">棉衣</option>
+                                            <option value="风衣">风衣</option>
+                                        </select>
                                     </div>
                                     <div class="form-group">
                                         <label for="create_date" class="form-control-label">入库日期</label>
-                                        <input type="text" class="form-control" id="create_date">
+                                        <input type="text" class="form-control" id="create_date" name="create_date">
                                     </div>
                                     <div class="form-group">
                                         <label for="designer" class="form-control-label">设计师</label>
-                                        <input type="text" class="form-control" id="designer">
+                                        <select  class="form-control" id="designer">
+                                            <option   th:each="c:${designlist}"  th:value="${c.workerName}"
+                                                      th:text="${c.workerName}" ></option>
+                                        </select>
                                     </div>
                                     <div class="form-group">
                                         <label for="model" class="form-control-label">版师</label>
-                                        <input type="text" class="form-control" id="model">
+                                        <select  class="form-control" id="model">
+                                            <option   th:each="c:${modellist}"  th:value="${c.workerName}"
+                                                      th:text="${c.workerName}" ></option>
+                                        </select>
                                     </div>
                                     <div class="form-group">
                                         <label for="sample" class="form-control-label">样衣师</label>
-                                        <input type="text" class="form-control" id="sample">
+                                        <select  class="form-control" id="sample">
+                                            <option   th:each="c:${samplelist}"  th:value="${c.workerName}"
+                                                      th:text="${c.workerName}" ></option>
+                                        </select>
                                     </div>
                                     <div class="form-group">
                                         <label for="origin" class="form-control-label">产地</label>
-                                        <input type="text" class="form-control" id="origin">
+                                        <select  class="form-control" id="origin">
+                                            <option value="北京">北京</option>
+                                            <option value="杭州">杭州</option>
+                                            <option value="柯桥">柯桥</option>
+                                        </select>
                                     </div>
                                 </form>
                             </div>
@@ -225,7 +243,47 @@
 
 </div>
 <script type="text/javascript" src="/js/password.js"></script>
+<script type="text/javascript">
 
+    $(function () {
+        $('#modal-form').bootstrapValidator({
+　　　　　　　　message: 'This value is not valid',
+            　feedbackIcons: {
+                　　　　　　　　valid: 'glyphicon glyphicon-ok',
+                　　　　　　　　invalid: 'glyphicon glyphicon-remove',
+                　　　　　　　　validating: 'glyphicon glyphicon-refresh'
+            　　　　　　　　   },
+            fields: {
+                cid: {
+                    message: '样衣编号验证失败',
+                    validators: {
+                        notEmpty: {
+                            message: '样衣编号不能为空'
+                        },
+						stringLength : {
+							min : 2,
+							message : '样衣编号长度必须大于2'
+						},
+						regexp: {
+                            regexp: /^[a-zA-Z0-9_\.\-]+$/,
+                            message: '样衣编号只能是字母数字和-的组合'
+						 },
+                        remote: {
+                            type: 'POST',
+                            contentType: 'application/json;charset=utf-8',
+                            url: '/ValidateCid',
+                            dataType: 'json',
+                            data: JSON.stringify({
+                                cid:  $('#cid').val()
+                            }),
+                            message: '样衣编号重复'
+                        }
+                    }
+                }
+            }
+        });
+    })
+</script>
 <script type="text/javascript">
 //$("#exampleModal").modal({backdrop:false});
 $(document).ready(function(){

@@ -1,12 +1,11 @@
 package com.design.samplemgt.endpoint;
 
-import com.design.samplemgt.dto.AddSampleDTO;
-import com.design.samplemgt.dto.QueryParamDTO;
-import com.design.samplemgt.dto.SampleClothDTO;
+import com.design.samplemgt.dto.*;
 import com.design.samplemgt.pojo.Cloth;
 import com.design.samplemgt.service.ClothService;
 import com.design.samplemgt.utils.DataUtil;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.MediaType;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.*;
 import io.swagger.annotations.ApiOperation;
@@ -54,4 +53,19 @@ public class SampleEndPoint {
         return clothService.Save(c);
     }
 
+
+    @ApiOperation(value = "ValidateCid")
+    @ApiResponses(
+            value = {@ApiResponse(code = 200, message = "Success"), @ApiResponse(code = 500, message = "InternalServerError")})
+    @RequestMapping(value = "/ValidateCid", method = RequestMethod.POST, consumes = MediaType.APPLICATION_FORM_URLENCODED_VALUE,
+            produces = "application/json;charset=UTF-8")
+    public ValidateDTO ValidateCid(ValidateSampleDTO sample){
+        ValidateDTO v = new ValidateDTO();
+        v.valid = false;
+        if( clothService.existsByCid(sample.cid)){
+            return v;
+        }
+        v.valid = true;
+        return v;
+    }
 }

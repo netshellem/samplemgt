@@ -9,4 +9,5 @@ public interface UserService {
     public List<AppUser> findAll();
     public AppUser save(AppUser user);
     public AppUser findByUserId(long id);
+    public Boolean existByUserName(String name);
 }

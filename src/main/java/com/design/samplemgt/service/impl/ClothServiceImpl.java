@@ -37,6 +37,11 @@ public class ClothServiceImpl implements ClothService {
     }
 
     @Override
+    public Boolean existsByCid(String cid) {
+        return clothRepository.existsByCid(cid);
+    }
+
+    @Override
     public List<Cloth> findClothByQuery(QueryParamDTO param){
         return clothRepository.findAll((Specification<Cloth>) (root, query, cb) -> {
             List<Predicate> predicates = new ArrayList<>();

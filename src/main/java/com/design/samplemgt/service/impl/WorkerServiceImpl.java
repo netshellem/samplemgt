@@ -40,4 +40,9 @@ public class WorkerServiceImpl implements WorkerService {
     public Worker Save(Worker worker) {
         return workerRepository.save(worker);
     }
+
+    @Override
+    public List<Worker> findByWorkTypeAndEnabledTrue(String workType) {
+        return workerRepository.findByWorkTypeAndEnabledTrue(workType);
+    }
 }

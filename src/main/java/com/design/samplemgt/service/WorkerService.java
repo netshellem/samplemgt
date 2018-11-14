@@ -11,4 +11,5 @@ public interface WorkerService {
     public List<Worker> FindAllWorkers();
     public void UpdateWorker(Worker worker);
     public Worker Save(Worker worker);
+    public List<Worker> findByWorkTypeAndEnabledTrue(String workType);
 }

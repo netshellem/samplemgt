@@ -1,5 +1,7 @@
 package com.design.samplemgt.endpoint;
 
+import com.design.samplemgt.dto.ValidateDTO;
+import com.design.samplemgt.dto.ValidateWorkerDTO;
 import com.design.samplemgt.dto.WorkerDTO;
 import com.design.samplemgt.pojo.Worker;
 import com.design.samplemgt.service.WorkerService;
@@ -7,6 +9,7 @@ import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiResponse;
 import io.swagger.annotations.ApiResponses;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -59,4 +62,18 @@ public class WorkerEndPoint {
         return true;
     }
 
+    @ApiOperation(value = "ValidateWorkerName")
+    @ApiResponses(
+            value = {@ApiResponse(code = 200, message = "Success"), @ApiResponse(code = 500, message = "InternalServerError")})
+    @RequestMapping(value = "/ValidateWorkerName", method = RequestMethod.POST, consumes = MediaType.APPLICATION_FORM_URLENCODED_VALUE,
+            produces = "application/json;charset=UTF-8")
+    public ValidateDTO ValidateWorkerName(ValidateWorkerDTO worker){
+            ValidateDTO v = new ValidateDTO();
+            v.valid = false;
+           if( workerService.existByWorkerName(worker.userName)){
+               return v;
+           }
+           v.valid = true;
+           return v;
+    }
 }
