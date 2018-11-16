@@ -148,8 +148,8 @@
 </div>
 <script type="text/javascript" src="/js/password.js"></script>
 <script type="text/javascript">
-
     $(function () {
+    $('#user-modal-form').data('bootstrapValidator', null);
         $('#user-modal-form').bootstrapValidator({
 　　　　　　　　message: 'This value is not valid',
             　feedbackIcons: {
@@ -210,6 +210,21 @@
         });
     })
 </script>
+<script>
+ $('#ChangePasswordModal').on('hidden.bs.modal', function(){
+   $('#pass').val("");
+   $('#confirm').val("");
+   $('#password-modal-form').bootstrapValidator('resetForm', true);
+   });
+</script>
+<script type="text/javascript">
+ $('#userModal').on('hidden.bs.modal', function(){
+    $('#userName').val("");
+   $('#password1').val("");
+   $('#password1').val("");
+   $('#user-modal-form').bootstrapValidator('resetForm', true);
+   });
+</script>
 <script type="text/javascript">
 $(document).ready(function(){
 $("#subuser").click(function(e){
@@ -227,12 +242,14 @@ $("#subuser").click(function(e){
                 type: "POST",
                 data : JSON.stringify(params),
                 success: function(data){
+                    $('#user-modal-form').data('bootstrapValidator').resetForm(true);
                     $("#userModal").modal('hide');
                     var $parent =  $('#usertable');
                      $parent.bootstrapTable('refresh');
                 },
                 error:function(){
                     alert("添加失败");
+                    $('#user-modal-form').data('bootstrapValidator').resetForm(true);
                     $("#user-modal-form").modal('hide');
                 }
                 });

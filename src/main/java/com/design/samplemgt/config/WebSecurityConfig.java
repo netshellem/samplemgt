@@ -15,6 +15,9 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.web.authentication.rememberme.JdbcTokenRepositoryImpl;
 import org.springframework.security.web.authentication.rememberme.PersistentTokenRepository;
 
+import java.text.SimpleDateFormat;
+import java.util.Date;
+
 @Configuration
 @EnableWebSecurity
 public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
@@ -60,13 +63,15 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
         // But access a page that requires role YY,
         // AccessDeniedException will be thrown.
         http.authorizeRequests().and().exceptionHandling().accessDeniedPage("/403");
-
+        //current year
+        SimpleDateFormat df = new SimpleDateFormat("yyyy");
+        String cy = df.format(new Date());
         // Config for Login Form
         http.authorizeRequests().and().formLogin()//
                 // Submit URL of login page.
                 .loginProcessingUrl("/node_security_check") // Submit URL
                 .loginPage("/login")//
-                .defaultSuccessUrl("/home/2018")//
+                .defaultSuccessUrl("/home/"+cy)//
                 .failureUrl("/login?error=true")//
                 .usernameParameter("username")//
                 .passwordParameter("password")

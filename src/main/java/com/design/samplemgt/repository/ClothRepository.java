@@ -1,13 +1,13 @@
 package com.design.samplemgt.repository;
 
 import com.design.samplemgt.pojo.Cloth;
-import org.springframework.data.jpa.domain.Specification;
 import org.springframework.data.jpa.repository.JpaSpecificationExecutor;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.CrudRepository;
 
 import java.util.Date;
 import java.util.List;
+import java.util.Optional;
 
 public interface ClothRepository  extends CrudRepository<Cloth, Integer>,
         JpaSpecificationExecutor<Cloth> {
@@ -16,6 +16,7 @@ public interface ClothRepository  extends CrudRepository<Cloth, Integer>,
 
     @Query("SELECT CASE WHEN COUNT(w) > 0 THEN 'true' ELSE 'false' END FROM Cloth w WHERE w.cid = ?1")
     Boolean existsByCid(String cid);
+    Optional<Cloth> findByCid(String cid);
     /*
     @Query("select new com.design.samplemgt.dto.SampleClothDTO(cid,clothType,design,model," +
             "sample,status,level,cdate,sdate,customer,comment) from Cloth c where c.enabled = true")

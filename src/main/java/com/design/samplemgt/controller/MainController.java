@@ -89,6 +89,7 @@ public class MainController {
     public String homePage(Model model, @PathVariable(value="year",required = false) String year) {
         Date dNow = new Date();
         SimpleDateFormat ft = new SimpleDateFormat ("yyyy");
+        SimpleDateFormat cd = new SimpleDateFormat ("yyyy-MM-dd");
         String current = ft.format(dNow);
         int y = Integer.parseInt(current);
         if(year == null)
@@ -104,6 +105,7 @@ public class MainController {
         model.addAttribute("designlist", workerService.findByWorkTypeAndEnabledTrue("设计师"));
         model.addAttribute("modellist", workerService.findByWorkTypeAndEnabledTrue("版师"));
         model.addAttribute("samplelist", workerService.findByWorkTypeAndEnabledTrue("样衣师"));
+        model.addAttribute("cd", cd.format(dNow));
         return "home";
     }
 

@@ -138,6 +138,7 @@
                         <option value="复色">复色</option>
                         <option value="贴牌">贴牌</option>
                         <option value="合作">合作</option>
+                        <option value="处理">处理</option>
                     </select>
 
                 </div>
@@ -191,32 +192,32 @@
                                     </div>
                                     <div class="form-group">
                                         <label for="create_date" class="form-control-label">入库日期</label>
-                                        <input type="text" class="form-control" id="create_date" name="create_date">
+                                        <input type="text" class="form-control" id="create_date" name="create_date" th:value="${cd}">
                                     </div>
                                     <div class="form-group">
                                         <label for="designer" class="form-control-label">设计师</label>
-                                        <select  class="form-control" id="designer">
+                                        <select  class="form-control" id="designer" name="designer">
                                             <option   th:each="c:${designlist}"  th:value="${c.workerName}"
                                                       th:text="${c.workerName}" ></option>
                                         </select>
                                     </div>
                                     <div class="form-group">
                                         <label for="model" class="form-control-label">版师</label>
-                                        <select  class="form-control" id="model">
+                                        <select  class="form-control" id="model" name="model">
                                             <option   th:each="c:${modellist}"  th:value="${c.workerName}"
                                                       th:text="${c.workerName}" ></option>
                                         </select>
                                     </div>
                                     <div class="form-group">
                                         <label for="sample" class="form-control-label">样衣师</label>
-                                        <select  class="form-control" id="sample">
+                                        <select  class="form-control" id="sample" name="sample">
                                             <option   th:each="c:${samplelist}"  th:value="${c.workerName}"
                                                       th:text="${c.workerName}" ></option>
                                         </select>
                                     </div>
                                     <div class="form-group">
                                         <label for="origin" class="form-control-label">产地</label>
-                                        <select  class="form-control" id="origin">
+                                        <select  class="form-control" id="origin" name="origin">
                                             <option value="北京">北京</option>
                                             <option value="杭州">杭州</option>
                                             <option value="柯桥">柯桥</option>
@@ -243,6 +244,19 @@
 
 </div>
 <script type="text/javascript" src="/js/password.js"></script>
+<script>
+ $('#ChangePasswordModal').on('hidden.bs.modal', function(){
+   $('#pass').val("");
+   $('#confirm').val("");
+   $('#password-modal-form').bootstrapValidator('resetForm', true);
+   });
+</script>
+<script>
+ $('#exampleModal').on('hidden.bs.modal', function(){
+   $('#cid').val("");
+   $('#modal-form').bootstrapValidator('resetForm', true);
+   });
+</script>
 <script type="text/javascript">
 
     $(function () {
@@ -287,9 +301,14 @@
 <script type="text/javascript">
 //$("#exampleModal").modal({backdrop:false});
 $(document).ready(function(){
+
 $("#subsample").click(function(e){
+if($('#modal-form').data('bootstrapValidator').isValid()){
     var params = {};
     $('#modal-form').find('input[id]').each(function () {
+        params[$(this).attr('id')] = $(this).val();
+    });
+   $('#modal-form').find('select[id]').each(function () {
         params[$(this).attr('id')] = $(this).val();
     });
      $.ajax({
@@ -299,19 +318,28 @@ $("#subsample").click(function(e){
                 type: "POST",
                 data : JSON.stringify(params),
                 success: function(data){
+                    $("#modal-form").data("bootstrapValidator").resetForm(true);
                     $("#exampleModal").modal('hide');
                     var $parent =  $('#table');
                      $parent.bootstrapTable('refresh');
                 },
                 error:function(){
                     alert("出错了");
+                    $('#artist-modal-form').data('bootstrapValidator').resetForm(true);
                     $("#exampleModal").modal('hide');
                 }
-                });
             });
+       //$("#exampleModal").data("bootstrapValidator");
+     }else{
+		alert("校验失败");}
+	}
+	);
+
  });
  $("#exampleModal").on("hidden.bs.modal", function() {
+
   $(this).removeData("bs.modal");
+
 });
 var $calendar = {
   	language: 'zh-CN',

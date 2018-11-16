@@ -9,6 +9,7 @@ import com.design.samplemgt.repository.ClothRepository;
 import com.design.samplemgt.repository.WorkerRepository;
 import com.design.samplemgt.service.ClothService;
 import com.design.samplemgt.service.WorkerService;
+import jdk.nashorn.internal.runtime.options.Option;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
@@ -21,6 +22,7 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+import java.util.Optional;
 
 @Service("ClothServiceImpl")
 public class ClothServiceImpl implements ClothService {
@@ -39,6 +41,14 @@ public class ClothServiceImpl implements ClothService {
     @Override
     public Boolean existsByCid(String cid) {
         return clothRepository.existsByCid(cid);
+    }
+
+    public Cloth findOneByCid(String cid){
+        Optional<Cloth> c= clothRepository.findByCid(cid);
+        if(c.isPresent()){
+            return c.get();
+        }
+        return null;
     }
 
     @Override

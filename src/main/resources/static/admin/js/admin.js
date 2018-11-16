@@ -117,7 +117,7 @@ $(function () {
                         title: '状态',
                         source:[{value:"库存",text:"库存"},{value:"售出",text:"售出"},{value:"退货",text:"退货"},
                         {value:"赠送",text:"赠送"},{value:"复色",text:"复色"},{value:"贴牌",text:"贴牌"},
-                        {value:"合作",text:"合作"}]
+                        {value:"合作",text:"合作"},{value:"处理",text:"处理"}]
              },
             title: '状态'
         },
@@ -270,3 +270,30 @@ function queryParams() {
 function responseHandler(res) {
     return res.rows;
 }
+var $delbutton = $('#delbtn');
+$delbutton.click(function () {
+    var ids =  $.map($table.bootstrapTable('getSelections'), function (row) {
+        return row.cid;
+    });
+    if(ids.length==0){
+    alert("请选择数据");
+    return;
+    }
+    if(confirm("确认删除吗?")){
+
+    $.ajax({
+   url:'/admin/DeleteSample?cid='+ ids.join(','),
+   data:{
+     json:JSON.stringify(ids)
+   },
+   dataType:'json',
+   success:function(data) {
+	    $table.bootstrapTable('remove', {
+            field: 'cid',
+            values: ids
+        });
+    }
+});
+    }
+
+});

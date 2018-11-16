@@ -10,4 +10,5 @@ public interface ClothService {
     public List<Cloth> findClothByYear(String year);
     public Cloth Save(Cloth cloth);
     Boolean existsByCid(String cid);
+    public Cloth findOneByCid(String cid);
 }

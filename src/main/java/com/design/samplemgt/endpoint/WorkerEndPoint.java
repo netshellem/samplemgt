@@ -40,7 +40,7 @@ public class WorkerEndPoint {
         worker.setCdate(workerDTO.cdate);
         worker.setId(workerDTO.id);
         worker.setWorkType(workerDTO.workType);
-        worker.setWorkerName(workerDTO.workerName);
+        worker.setWorkerName(workerDTO.workerName.replaceAll(" ",""));
         if(workerDTO.enabled.equals("1"))
             worker.setEnabled(true);
         else
@@ -57,6 +57,7 @@ public class WorkerEndPoint {
        // System.out.println("========="+ worker.toString());
         Date d = new Date();
         worker.setCdate(d);
+        worker.setEnabled(true);
         if(null == workerService.Save(worker))
             return false;
         return true;
@@ -70,7 +71,7 @@ public class WorkerEndPoint {
     public ValidateDTO ValidateWorkerName(ValidateWorkerDTO worker){
             ValidateDTO v = new ValidateDTO();
             v.valid = false;
-           if( workerService.existByWorkerName(worker.userName)){
+           if( workerService.existByWorkerName(worker.userName.replaceAll(" ",""))){
                return v;
            }
            v.valid = true;

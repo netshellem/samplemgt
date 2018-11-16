@@ -189,8 +189,7 @@ $(function () {
 	//$('#addbtn').click(function (){window.location.href="add.jsp";});
 });
 var $table = $('#table');
-var $ok = $('#ok');
-var $delbutton = $('#delbtn');
+
 $(function () {
     $ok.click(function () {
         document.getElementById("activeyear").value="";

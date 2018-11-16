@@ -179,14 +179,26 @@
         });
     })
 </script>
+<script>
+ $('#ChangePasswordModal').on('hidden.bs.modal', function(){
+   $('#pass').val("");
+   $('#confirm').val("");
+   $('#password-modal-form').bootstrapValidator('resetForm', true);
+   });
+</script>
+<script>
+ $('#artistModal').on('hidden.bs.modal', function(){
+   $('#userName').val("");
+   $('#artist-modal-form').data('bootstrapValidator').resetForm(true);
+   });
+</script>
 <script type="text/javascript">
 $(document).ready(function(){
 $("#subworker").click(function(e){
-
+	if($('#artist-modal-form').data('bootstrapValidator').isValid()){
     var params = {};
-    $('#artist-modal-form').find('input[id]').each(function () {
-        params[$(this).attr('id')] = $(this).val();
-    });
+     params['workerName'] = $('#userName').val();
+
     $('#artist-modal-form').find('select[id]').each(function () {
         params[$(this).attr('id')] = $(this).val();
     });
@@ -197,16 +209,21 @@ $("#subworker").click(function(e){
                 type: "POST",
                 data : JSON.stringify(params),
                 success: function(data){
+                    $('#artist-modal-form').data('bootstrapValidator').resetForm(true);
                     $("#artistModal").modal('hide');
                     var $parent =  $('#artisttable');
                      $parent.bootstrapTable('refresh');
                 },
                 error:function(){
                     alert("添加失败");
+                    $('#artist-modal-form').data('bootstrapValidator').resetForm(true);
                     $("#artistModal").modal('hide');
                 }
                 });
-            });
+	}else{
+		alert('校验失败');
+	}
+   });
  });
 
 </script>

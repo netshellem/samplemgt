@@ -13,6 +13,7 @@ import io.swagger.annotations.ApiResponse;
 import io.swagger.annotations.ApiResponses;
 
 import java.util.List;
+import java.util.StringTokenizer;
 
 @RestController
 public class SampleEndPoint {
@@ -43,9 +44,9 @@ public class SampleEndPoint {
     @ResponseBody
     public Cloth save(@RequestBody AddSampleDTO sample){
         Cloth c = new Cloth();
-        c.setCid(sample.cid);
+        c.setCid(sample.cid.toUpperCase().replaceAll(" ",""));
         c.setClothType(sample.clothType);
-        c.setCdate(sample.cdate);
+        c.setCdate(sample.create_date);
         c.setDesign(sample.design);
         c.setModel(sample.model);
         c.setSample(sample.sample);
@@ -62,10 +63,23 @@ public class SampleEndPoint {
     public ValidateDTO ValidateCid(ValidateSampleDTO sample){
         ValidateDTO v = new ValidateDTO();
         v.valid = false;
-        if( clothService.existsByCid(sample.cid)){
+        if( clothService.existsByCid(sample.cid.toUpperCase().replace(" ",""))){
             return v;
         }
         v.valid = true;
         return v;
     }
+
+    @RequestMapping(value = "/admin/DeleteSample", method = RequestMethod.GET)
+    public boolean DeleteSample(@RequestParam(value="cid", required = true)  String cid){
+        String[] sourceStrArray = cid.split(",");
+        for (int i = 0; i < sourceStrArray.length; i++) {
+            Cloth c = clothService.findOneByCid(sourceStrArray[i]);
+            c.setEnabled(false);
+            if (null == clothService.Save(c))
+                return false;
+        }
+        return true;
+    }
+
 }

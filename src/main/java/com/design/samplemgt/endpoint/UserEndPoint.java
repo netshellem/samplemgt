@@ -63,7 +63,7 @@ public class UserEndPoint {
         //System.out.println("=============="+userDTO.toString());
         AppUser user = new AppUser();
         user.setEnabled(true);
-        user.setUserName(userDTO.userName);
+        user.setUserName(userDTO.userName.replaceAll(" ", ""));
         user.setEncrytedPassword(EncrytedPasswordUtils.encrytePassword(userDTO.password));
         if(userService.save(user) == null)
             return false;
@@ -81,7 +81,7 @@ public class UserEndPoint {
     @RequestMapping(value = "/UpdateUser", method = RequestMethod.POST)
     public boolean UpdateUser(@RequestBody UserDTO userDTO){
         AppUser appUser = userService.findByUserId(userDTO.id);
-        System.out.println("=================="+userDTO.enabled);
+        //System.out.println("=================="+userDTO.enabled);
         appUser.setEnabled(userDTO.enabled);
         if(null == userService.save(appUser)) return false;
 
@@ -96,7 +96,7 @@ public class UserEndPoint {
     public ValidateDTO ValidateUserName(ValidateWorkerDTO user){
         ValidateDTO v = new ValidateDTO();
         v.valid = false;
-        if( userService.existByUserName(user.userName)){
+        if( userService.existByUserName(user.userName.replaceAll(" ",""))){
             return v;
         }
         v.valid = true;

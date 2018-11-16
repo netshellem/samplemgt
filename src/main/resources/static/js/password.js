@@ -1,4 +1,5 @@
 $(document).ready(function(){
+ $('#password-modal-form').data('bootstrapValidator', null);
 $('#password-modal-form').bootstrapValidator(
     {
         message : 'This value is not valid',
@@ -55,6 +56,7 @@ if($('#password-modal-form').data('bootstrapValidator').isValid()){
                     alert("密码修改失败");
                     $("#password-modal-form").data('bootstrapValidator').resetForm(true);
                     $("#ChangePasswordModal").modal('hide');
+
                 }
                 });
         }else{

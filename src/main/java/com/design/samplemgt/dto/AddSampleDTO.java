@@ -32,6 +32,6 @@ public class AddSampleDTO {
     public String origin;
 
     @JsonProperty("create_date")
-    public Date cdate;
+    public Date create_date;
 
 }
