@@ -65,6 +65,7 @@ public class UserEndPoint {
         user.setEnabled(true);
         user.setUserName(userDTO.userName.replaceAll(" ", ""));
         user.setEncrytedPassword(EncrytedPasswordUtils.encrytePassword(userDTO.password));
+        user.setEnabled(true);
         if(userService.save(user) == null)
             return false;
         if(userDTO.userType.equals("0"))
