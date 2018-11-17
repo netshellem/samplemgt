@@ -18,7 +18,6 @@ public interface ClothRepository  extends CrudRepository<Cloth, Integer>,
     Boolean existsByCid(String cid);
     Optional<Cloth> findByCid(String cid);
 
-
     void delete(Cloth c);
     /*
     @Query("select new com.design.samplemgt.dto.SampleClothDTO(cid,clothType,design,model," +

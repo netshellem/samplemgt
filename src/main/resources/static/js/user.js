@@ -110,6 +110,12 @@ $(function () {
             title: '产地'
         },
         {
+            field: 'copy',
+            sortable: true,
+            searchable: false,
+            title: '复制'
+        },
+        {
             field: 'status',
             sortable: true,
             searchable: false,

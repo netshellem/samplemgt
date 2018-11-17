@@ -2,6 +2,7 @@ package com.design.samplemgt.pojo;
 
 import javax.persistence.*;
 import java.util.Date;
+import java.util.Objects;
 
 @Entity
 @Table(name = "cloth", //
@@ -117,6 +118,23 @@ public class Cloth {
         this.enabled = enabled;
     }
 
+
+    public String getStatus() {
+        return status;
+    }
+
+    public void setStatus(String status) {
+        this.status = status;
+    }
+
+    public String getCopy() {
+        return copy;
+    }
+
+    public void setCopy(String copy) {
+        this.copy = copy;
+    }
+
     @Column(name = "cid", nullable = false)
     private String cid;
 
@@ -144,6 +162,20 @@ public class Cloth {
     @Column(name = "comment", nullable = true)
     private String comment;
 
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (!(o instanceof Cloth)) return false;
+        Cloth cloth = (Cloth) o;
+        return  Objects.equals(getCid(), cloth.getCid()) ;
+
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(getId(), getCid(), getCdate(), getSdate(), getDesign(), getModel(), getSample(), getClothType(), getCustomer(), getComment(), getOrigin(), getAppuser(), isEnabled(), getStatus(), getCopy());
+    }
+
     @Column(name = "origin", nullable = true)
     private String origin;
 
@@ -154,14 +186,10 @@ public class Cloth {
     @Column(name = "enabled", length = 1, nullable = false)
     private boolean enabled;
 
-    public String getStatus() {
-        return status;
-    }
-
-    public void setStatus(String status) {
-        this.status = status;
-    }
 
     @Column(name = "status",  nullable = true)
     private String status;
+
+    @Column(name = "copy",  nullable = true)
+    private String copy;
 }

@@ -110,6 +110,20 @@ $(function () {
             title: '产地'
         },
         {
+            field: 'copy',
+            sortable: true,
+            editable: {
+                        type: 'text',
+                        title: '输入复制备注：',
+                        validate: function (value) {
+                               if ($.trim(value) == '') {
+                                   return '备注不能为空!';
+                               }
+                           }
+                        },
+            title: '复制'
+         },
+        {
             field: 'status',
             sortable: true,
             sorter: function(a,b){return a.localeCompare(b)},
@@ -217,10 +231,10 @@ $(function () {
                 	$('#table').bootstrapTable('resetView');
                     $.ajax({
                         type: "post",
-                        contentType: 'application/x-www-form-urlencoded;charset=utf-8',
-                        url: "../sample/UpdateRow",
-                        //date:row,
-                        data:encodeURIComponent(JSON.stringify(row)) ,
+                        url: "/admin/UpdateSample",
+                        contentType: "application/json;charset=utf-8",
+                        dataType : 'json',
+                        data:JSON.stringify(row) ,
                         success: function (data, status) {
                             if (status == "success") {
                                 alert('提交数据成功');

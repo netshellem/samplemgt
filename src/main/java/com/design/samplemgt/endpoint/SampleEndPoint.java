@@ -4,6 +4,7 @@ import com.design.samplemgt.dto.*;
 import com.design.samplemgt.pojo.Cloth;
 import com.design.samplemgt.service.ClothService;
 import com.design.samplemgt.utils.DataUtil;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -12,6 +13,7 @@ import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiResponse;
 import io.swagger.annotations.ApiResponses;
 
+import java.io.IOException;
 import java.util.List;
 import java.util.StringTokenizer;
 
@@ -43,7 +45,7 @@ public class SampleEndPoint {
     @RequestMapping(value = "/AddSample", method = RequestMethod.POST)
     @ResponseBody
     public Cloth save(@RequestBody AddSampleDTO sample){
-        System.out.println("+++++++++++++++++"+sample.origin);
+        //System.out.println("+++++++++++++++++"+sample.origin);
         Cloth c = new Cloth();
         c.setCid(sample.cid.toUpperCase().replaceAll(" ",""));
         c.setClothType(sample.clothType);
@@ -51,7 +53,7 @@ public class SampleEndPoint {
         c.setDesign(sample.design);
         c.setModel(sample.model);
         c.setSample(sample.sample);
-        c.setStatus(sample.status);
+        c.setStatus(StatusEnum.getName(1));
         c.setOrigin(sample.origin);
         c.setEnabled(true);
         return clothService.Save(c);
@@ -82,6 +84,40 @@ public class SampleEndPoint {
             clothService.delete(c);
         }
         return true;
+    }
+
+    @ApiOperation(value = "Update Sample Cloth")
+    @ApiResponses(
+            value = {@ApiResponse(code = 200, message = "Success"), @ApiResponse(code = 500, message = "InternalServerError")})
+    @RequestMapping(value = "/admin/UpdateSample", method = RequestMethod.POST,consumes = MediaType.APPLICATION_JSON_VALUE,
+            produces = "application/json;charset=UTF-8")
+    @ResponseBody
+    public boolean UpdateSample(@RequestBody String sample){
+        //System.out.println("%%%%%%%%%%%%%%%%%%%%%"+sample);
+        ObjectMapper objectMapper = new ObjectMapper();
+        try {
+            UpdateSampleDTO s = objectMapper.readValue(sample,UpdateSampleDTO.class);
+            Cloth c = clothService.findOneByCid(s.cid);
+            //c.setCid(s.cid.toUpperCase().replaceAll(" ",""));
+            //c.setClothType(s.clothType);
+            //c.setCdate(s.cdate);
+            //c.setDesign(s.design);
+           // c.setModel(s.model);
+            //c.setSample(s.sample);
+            c.setStatus(s.status);
+            c.setOrigin(s.origin);
+            c.setCopy(s.copy);
+            c.setComment(s.comment);
+            c.setCustomer(s.customer);
+            c.setSdate(s.sdate);
+            //c.setEnabled(true);
+            clothService.Save(c);
+            return true;
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+        return false;
     }
 
 }

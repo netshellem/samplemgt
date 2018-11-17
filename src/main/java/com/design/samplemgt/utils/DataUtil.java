@@ -26,6 +26,7 @@ public class DataUtil {
             sample.origin = c.getOrigin();
             sample.status = c.getStatus();
             sample.sdate = c.getSdate();
+            sample.copy = c.getCopy();
             return sample;
         });
         return sampleDTOLists;

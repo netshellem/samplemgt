@@ -1,19 +1,16 @@
 package com.design.samplemgt.dto;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
-
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import java.util.Date;
 
-
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-public class SampleClothDTO {
-
+public class UpdateSampleDTO {
     @JsonProperty("cid")
     public String cid;
 
@@ -50,4 +47,6 @@ public class SampleClothDTO {
     @JsonProperty("copy")
     public String copy;
 
+    @JsonProperty("state")
+    public String state;
 }
