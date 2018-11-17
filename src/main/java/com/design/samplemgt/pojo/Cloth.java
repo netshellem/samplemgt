@@ -97,7 +97,7 @@ public class Cloth {
         return origin;
     }
 
-    public void setOrigin(String level) {
+    public void setOrigin(String origin) {
         this.origin = origin;
     }
 

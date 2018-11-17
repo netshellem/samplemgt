@@ -43,6 +43,10 @@ public class ClothServiceImpl implements ClothService {
         return clothRepository.existsByCid(cid);
     }
 
+    @Override
+    public void delete(Cloth c){
+        clothRepository.delete(c);
+    }
     public Cloth findOneByCid(String cid){
         Optional<Cloth> c= clothRepository.findByCid(cid);
         if(c.isPresent()){

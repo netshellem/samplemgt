@@ -11,4 +11,5 @@ public interface ClothService {
     public Cloth Save(Cloth cloth);
     Boolean existsByCid(String cid);
     public Cloth findOneByCid(String cid);
+    public void delete(Cloth c);
 }

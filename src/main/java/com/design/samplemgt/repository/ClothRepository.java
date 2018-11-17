@@ -17,6 +17,9 @@ public interface ClothRepository  extends CrudRepository<Cloth, Integer>,
     @Query("SELECT CASE WHEN COUNT(w) > 0 THEN 'true' ELSE 'false' END FROM Cloth w WHERE w.cid = ?1")
     Boolean existsByCid(String cid);
     Optional<Cloth> findByCid(String cid);
+
+
+    void delete(Cloth c);
     /*
     @Query("select new com.design.samplemgt.dto.SampleClothDTO(cid,clothType,design,model," +
             "sample,status,level,cdate,sdate,customer,comment) from Cloth c where c.enabled = true")

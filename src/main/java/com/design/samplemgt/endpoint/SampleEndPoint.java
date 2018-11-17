@@ -43,6 +43,7 @@ public class SampleEndPoint {
     @RequestMapping(value = "/AddSample", method = RequestMethod.POST)
     @ResponseBody
     public Cloth save(@RequestBody AddSampleDTO sample){
+        System.out.println("+++++++++++++++++"+sample.origin);
         Cloth c = new Cloth();
         c.setCid(sample.cid.toUpperCase().replaceAll(" ",""));
         c.setClothType(sample.clothType);
@@ -78,8 +79,7 @@ public class SampleEndPoint {
         for (int i = 0; i < sourceStrArray.length; i++) {
             Cloth c = clothService.findOneByCid(sourceStrArray[i]);
             c.setEnabled(false);
-            if (null == clothService.Save(c))
-                return false;
+            clothService.delete(c);
         }
         return true;
     }
