@@ -190,13 +190,14 @@ $(function () {
 	//$('#addbtn').click(function (){window.location.href="add.jsp";});
 });
 var $table = $('#table');
-
+var $ok = $('#ok');
 $(function () {
     $ok.click(function () {
         document.getElementById("activeyear").value="";
         $table.bootstrapTable('refresh');
     });
 });
+
 
 function queryParams() {
     var params = {};
