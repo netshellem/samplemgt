@@ -51,6 +51,7 @@ public class SampleEndPoint {
         c.setModel(sample.model);
         c.setSample(sample.sample);
         c.setStatus(sample.status);
+        c.setOrigin(sample.origin);
         c.setEnabled(true);
         return clothService.Save(c);
     }
