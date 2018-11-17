@@ -156,7 +156,7 @@
                            type="hidden" id="activeyear"  th:value=@{${ActiveYear}}>
                 </div>
                 <div class="form-group">
-                    <button id="ok" type="submit" class="btn btn-default">OK</button>
+                    <button id="ok" type="submit" class="btn btn-default">查询</button>
                 </div>
 
             </div>
@@ -325,7 +325,7 @@ if($('#modal-form').data('bootstrapValidator').isValid()){
                 },
                 error:function(){
                     alert("出错了");
-                    $('#artist-modal-form').data('bootstrapValidator').resetForm(true);
+                    $("#modal-form").data("bootstrapValidator").resetForm(true);
                     $("#exampleModal").modal('hide');
                 }
             });
