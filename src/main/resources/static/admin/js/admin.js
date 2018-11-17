@@ -33,6 +33,7 @@ $(function () {
 		height: 680,
         uniqueId: 'cid',
         cardView: false,
+        searchOnEnterKey: true,
         detailView: false,
         columns: [
  		{
