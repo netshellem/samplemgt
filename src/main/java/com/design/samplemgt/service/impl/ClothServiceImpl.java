@@ -101,7 +101,7 @@ public class ClothServiceImpl implements ClothService {
                     if(worker.getWorkType().equals(WorkerTypeEnum.getName(3))) path = root.get("design");
                     predicates.add(cb.equal(path, param.keyword));
                 }else{
-                    predicates.add(cb.equal(root.get("design"), param.keyword));
+                    predicates.add(cb.like(root.get("customer"),"%" + param.keyword + "%"));
                 }
 
             }
