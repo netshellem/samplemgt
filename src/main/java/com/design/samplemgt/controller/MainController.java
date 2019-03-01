@@ -95,6 +95,8 @@ public class MainController {
         if(year == null)
             year = current;
         model.addAttribute("ActiveYear", year);
+        model.addAttribute("LastYear", y - 1 );
+        model.addAttribute("CurrentYear", y  );
         List<String> naviList=new ArrayList<>();
 
         while(y > 2015 ){
