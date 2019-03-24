@@ -1,0 +1,43 @@
+Manifest-Version: 1.0
+Class-Path: tomcat-embed-core-8.5.34.jar dom4j-1.6.1.jar spring-securi
+ ty-web-5.0.8.RELEASE.jar springfox-swagger-ui-2.7.0.jar spring-plugin
+ -metadata-1.2.0.RELEASE.jar springfox-swagger-common-2.7.0.jar spring
+ -aop-5.0.9.RELEASE.jar hibernate-core-5.2.17.Final.jar spring-boot-st
+ arter-tomcat-2.0.5.RELEASE.jar antlr-2.7.7.jar spring-jcl-5.0.9.RELEA
+ SE.jar mysql-connector-java-5.1.47.jar guava-18.0.jar tomcat-embed-we
+ bsocket-8.5.34.jar spring-web-5.0.9.RELEASE.jar HikariCP-2.7.9.jar lo
+ gback-classic-1.2.3.jar logback-core-1.2.3.jar spring-data-jpa-2.0.10
+ .RELEASE.jar spring-context-5.0.9.RELEASE.jar jackson-annotations-2.9
+ .0.jar springfox-spring-web-2.7.0.jar hibernate-commons-annotations-5
+ .0.1.Final.jar jackson-module-parameter-names-2.9.6.jar spring-core-5
+ .0.9.RELEASE.jar spring-boot-autoconfigure-2.0.5.RELEASE.jar thymelea
+ f-extras-springsecurity4-3.0.2.RELEASE.jar mapstruct-1.1.0.Final.jar 
+ tomcat-embed-el-8.5.34.jar spring-orm-5.0.9.RELEASE.jar spring-webmvc
+ -5.0.9.RELEASE.jar swagger-models-1.5.13.jar spring-security-core-5.0
+ .8.RELEASE.jar spring-security-config-5.0.8.RELEASE.jar javassist-3.2
+ 2.0-GA.jar javax.transaction-api-1.2.jar lombok-1.16.22.jar spring-bo
+ ot-starter-logging-2.0.5.RELEASE.jar spring-boot-starter-data-jpa-2.0
+ .5.RELEASE.jar spring-boot-2.0.5.RELEASE.jar javax.annotation-api-1.3
+ .2.jar springfox-spi-2.7.0.jar spring-boot-starter-2.0.5.RELEASE.jar 
+ classmate-1.3.4.jar spring-plugin-core-1.2.0.RELEASE.jar spring-boot-
+ starter-web-2.0.5.RELEASE.jar jackson-datatype-jdk8-2.9.6.jar byte-bu
+ ddy-1.7.11.jar jul-to-slf4j-1.7.25.jar log4j-api-2.10.0.jar springfox
+ -schema-2.7.0.jar snakeyaml-1.19.jar reflections-0.9.11.jar spring-be
+ ans-5.0.9.RELEASE.jar thymeleaf-3.0.9.RELEASE.jar unbescape-1.1.5.REL
+ EASE.jar hibernate-jpa-2.1-api-1.0.2.Final.jar slf4j-api-1.7.25.jar s
+ pring-boot-devtools-2.0.5.RELEASE.jar jackson-core-2.9.6.jar spring-t
+ x-5.0.9.RELEASE.jar swagger-annotations-1.5.13.jar jboss-logging-3.3.
+ 2.Final.jar spring-data-commons-2.0.10.RELEASE.jar spring-boot-starte
+ r-security-2.0.5.RELEASE.jar spring-jdbc-5.0.9.RELEASE.jar hibernate-
+ validator-6.0.12.Final.jar aspectjweaver-1.8.13.jar spring-boot-start
+ er-json-2.0.5.RELEASE.jar springfox-swagger2-2.7.0.jar spring-boot-st
+ arter-jdbc-2.0.5.RELEASE.jar springfox-core-2.7.0.jar spring-boot-sta
+ rter-aop-2.0.5.RELEASE.jar jandex-2.0.3.Final.jar jackson-databind-2.
+ 9.6.jar jackson-datatype-jsr310-2.9.6.jar log4j-to-slf4j-2.10.0.jar s
+ pring-boot-starter-thymeleaf-2.0.5.RELEASE.jar thymeleaf-extras-java8
+ time-3.0.1.RELEASE.jar annotations-16.0.3.jar spring-expression-5.0.9
+ .RELEASE.jar attoparser-2.0.4.RELEASE.jar thymeleaf-spring5-3.0.9.REL
+ EASE.jar spring-aspects-5.0.9.RELEASE.jar validation-api-2.0.1.Final.
+ jar
+Main-Class: com.design.samplemgt.SamplemgtApplication
+
